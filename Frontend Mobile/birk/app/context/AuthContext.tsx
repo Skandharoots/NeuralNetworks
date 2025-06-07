@@ -72,11 +72,13 @@ export const AuthProvider = ({children}: any) => {
 
     const login = async (userName: string, password: string) => {
         try {
+            const csrf = await axios.get('/users/csrf');
             const result = await axios.post(`/users/login/`, {
                 username: userName,
                 password: password
             }, {
                 headers: {
+                    'X-CSRFToken': csrf.data,
                     'Content-Type': 'application/json'
                 }
             });
@@ -107,6 +109,7 @@ export const AuthProvider = ({children}: any) => {
 
     const register = async (firstName: string, lastName: string, userName: string, email: string, password: string) => {
         try {
+            const csrf = await axios.get('/users/csrf');
             return await axios.post(`/users/register/`, {
                 first_name: firstName,
                 last_name: lastName,
@@ -115,6 +118,7 @@ export const AuthProvider = ({children}: any) => {
                 password: password
             }, {
                 headers: {
+                    'X-CSRFToken': csrf.data,
                     'Content-Type': 'application/json',
                 }
             })
