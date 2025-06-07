@@ -101,7 +101,7 @@ export const AuthProvider = ({children}: any) => {
 
             return result;
         } catch (error) {
-            return { error: true, msg: (error as any).message }
+            return { error: true, msg: error }
         }
     };
 
@@ -119,7 +119,7 @@ export const AuthProvider = ({children}: any) => {
                 }
             })
         } catch (error) {
-            return { error: true, msg: (error as any).message }
+            return { error: true, msg: error }
         }
     }
 

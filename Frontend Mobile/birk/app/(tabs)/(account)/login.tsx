@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from 'expo-router';
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import { Appearance, Platform, SafeAreaView, StatusBar, Text, View } from "react-native";
 import ThemedButton from '../../components/ThemedButtonIrish';
 import ThemedButtonWhiteOutline from "../../components/ThemedButtonWhiteOutline";
@@ -19,11 +19,7 @@ export default function Login() {
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
     const router = useRouter();
-    const { authState, onLogin } = useAuth();
-
-    useEffect(() => {
-        console.log(authState)
-    }, [authState])
+    const { onLogin } = useAuth();
     
     const validate = () => {
         let isValid = true;
@@ -61,7 +57,7 @@ export default function Login() {
             return;
         const result = await onLogin!(userName, password);
         if (result && result.error) {
-            alert(result.msg);
+            alert(result.msg.message);
         } else {
             router.navigate('/(tabs)/(account)/account');
         }

@@ -118,11 +118,47 @@ export default function Register() {
             return;
         const result = await onRegister!(firstName, lastName, userName, email, password);
         if (result && result.error) {
-            alert(result.msg);
+            if (result.msg.response.data.first_name) {
+                setFirstNameError(true);
+                setFirstNameErrorMessage(result.msg.response.data.first_name);
+            } else {
+                setFirstNameError(false);
+                setFirstNameErrorMessage('');
+            }
+            if (result.msg.response.data.last_name) {
+                setLastNameError(true);
+                setLastNameErrorMessage(result.msg.response.data.last_name);
+            } else {
+                setLastNameError(false);
+                setLastNameErrorMessage('');
+            }
+            if (result.msg.response.data.username) {
+                setUserNameError(true);
+                setUserNameErrorMessage(result.msg.response.data.username);
+            } else {
+                setUserNameError(false);
+                setUserNameErrorMessage('');
+            }
+            if (result.msg.response.data.email) {
+                setEmailError(true);
+                setEmailErrorMessage(result.msg.response.data.email);
+            } else {
+                setEmailError(false);
+                setEmailErrorMessage('');
+            }
+            if (result.msg.response.data.password) {
+                setPasswordError(true);
+                setPasswordErrorMessage(result.msg.response.data.password);
+            } else {
+                setPasswordError(false);
+                setPasswordErrorMessage('');
+            }
+
         } else {
             alert('Welcome! ' + userName)
             router.navigate('/(tabs)/(account)/login');
         }
+
     }
 
     return (
