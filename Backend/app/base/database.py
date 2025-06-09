@@ -1,10 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.orm import declarative_base
+from sqlalchemy.ext.declarative import declarative_base
+from core.config_loader import settings
 
-URL_DATABASE = 'mysql+pymysql://root:lapunia2121@localhost:3306/birk'
-
-engine = create_engine(URL_DATABASE)
+engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 

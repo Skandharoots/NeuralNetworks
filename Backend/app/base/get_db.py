@@ -1,5 +1,4 @@
-from database_root.database import SessionLocal
-
+from base.database import SessionLocal
 
 def get_db():
     db = SessionLocal()
