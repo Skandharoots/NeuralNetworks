@@ -2,3 +2,7 @@ fastapi
 "uvicorn[standard]"
 PyJWT
 sqlalchemy
+cryptography
+pymysql
+bcrypt
+python-multipart
