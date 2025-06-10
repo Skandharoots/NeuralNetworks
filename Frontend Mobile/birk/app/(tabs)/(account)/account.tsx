@@ -8,8 +8,16 @@ import * as SecureStore from "expo-secure-store";
 
 
 export default function Account() {
-    const { authState, onLogout } = useAuth();
+    const { authState, onLogout, onCheck } = useAuth();
     const router = useRouter();
+
+    useEffect(() => {
+        if (onCheck) {
+            const result = onCheck();
+            if(!result)
+                router.navigate('/(tabs)/(account)/login')
+        }
+    }, [onCheck, router]);
 
     const logout = async () => {
         if (onLogout) {

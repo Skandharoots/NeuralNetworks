@@ -13,6 +13,7 @@ interface AuthProps {
     onRegister?: (firstName: string, lastName: string, userName: string, email: string, password: string) => Promise<any>;
     onLogin?: (email: string, password: string) => Promise<any>;
     onLogout?: () => Promise<any>;
+    onCheck?: () => boolean;
 }
 
 const TOKEN_KEY = "jwtToken";
@@ -123,8 +124,8 @@ export const AuthProvider = ({children}: any) => {
 
 
 
-    const checkActive = async () => {
-        const valid = await SecureStore.getItemAsync(VALID_UNTIL);
+    const checkActive = () => {
+        const valid = SecureStore.getItem(VALID_UNTIL);
         let now = new Date().getTime();
         if (valid && parseInt(valid) < now) {
             logout();
@@ -156,6 +157,7 @@ export const AuthProvider = ({children}: any) => {
         onRegister: register,
         onLogin: login,
         onLogout: logout,
+        onCheck: checkActive,
         authState
     };
 
