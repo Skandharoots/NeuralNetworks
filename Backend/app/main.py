@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from base.database import engine
-import users.models
-import users.models.user
-from users.router.user_router import user_router
-from auth.router.auth_router import auth_router
+from app.base.database import engine
+import app.users.models
+from app.users.models.user import Base
+from app.users.router.user_router import user_router
+from app.auth.router.auth_router import auth_router
 from fastapi.middleware.cors import CORSMiddleware
 
 openapi_tags=[
@@ -31,7 +31,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-users.models.user.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 app.include_router(user_router, prefix='/api', tags=["Users"])
 app.include_router(auth_router, prefix='/api', tags=["Auth"])

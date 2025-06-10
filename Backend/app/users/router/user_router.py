@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from auth.service.auth_service import get_current_active_user
-from users.models.dto import RegisterDto, UserDto, UserSchema
-from users.models.user import User
+from app.auth.service.auth_service import get_current_active_user
+from app.users.models.dto import RegisterDto, UserDto, UserSchema
+from app.users.models.user import User
 from sqlalchemy.orm import Session
-from base.get_db import get_db
-from users.service.user_service import get_user_by_email, get_user_by_id
-from auth.utils.utils import get_password_hash
+from app.base.get_db import get_db
+from app.users.service.user_service import get_user_by_email, get_user_by_id
+from app.auth.utils.utils import get_password_hash
 from typing import Annotated
 
 user_router = APIRouter(
