@@ -2,13 +2,13 @@ import ThemedButtonIrish from "@/app/components/ThemedButtonIrish";
 import { useAuth } from "@/app/context/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import { Fragment } from "react";
+import {Fragment, useEffect, useState} from "react";
 import { Appearance, Platform, SafeAreaView, StatusBar, Text, View } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 
 export default function Account() {
-
-    const { onLogout } = useAuth();
+    const { authState, onLogout } = useAuth();
     const router = useRouter();
 
     const logout = async () => {
@@ -25,7 +25,7 @@ export default function Account() {
                         <View className="flex-1 w-['100%'] h-['50%'] items-center justify-start bg-background-light dark:bg-background-dark " >
                     <View className="w-['100%'] max-h-['50%'] h-fit items-center justify-start rounded-2xl p-8">
                             <View className="w-['100%'] flex-row h-fit justify-center items-center mb-4 pb-4 border-b border-text-light dark:border-shadowLink-dark">
-                                <Text className="text-2xl inline-block align-middle leading-8 text-text-light items-center justify-start dark:text-text-dark font-medium">Account</Text>
+                                <Text className="text-2xl inline-block align-middle leading-8 text-text-light items-center justify-start dark:text-text-dark font-medium">Welcome, {SecureStore.getItem("userName")}.</Text>
                             </View>
                             <View className="w-['100%'] flex-row h-fit pl-8 pr-8 pb-2 pt-2 mt-4 mb-4 rounded-lg border border-text-light dark:border-shadowLink-dark">
                                 <Text className="text-xl align-middle text-text-light dark:text-text-dark"><Ionicons name="basket-outline" size={22}/></Text>

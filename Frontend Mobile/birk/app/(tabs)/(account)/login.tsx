@@ -69,7 +69,7 @@ export default function Login() {
                 <View className="flex-1 w-['100%'] h-['100%'] items-center justify-start bg-background-light dark:bg-background-dark " >
                     <View className="w-['95%'] h-['50%'] items-center justify-center rounded-2xl p-8">
                         <Text className="text-4xl font-semibold text-text-light dark:text-text-dark mb-10 ">Login</Text>
-                        <ThemedTextInput autoCapitalize="none" placeholder={"Username"} value={userName} onChangeText={setUserName} keyboard={"email-address"}/>
+                        <ThemedTextInput autoCapitalize="none" placeholder={"Email"} value={userName} onChangeText={setUserName} keyboard={"email-address"}/>
                         {userNameError &&
                             <Text className="text-xl w-['95%'] text-errorBtn-light">{userNameErrorMessage}</Text>
                         }
