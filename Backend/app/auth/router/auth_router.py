@@ -9,8 +9,7 @@ from app.auth.service.auth_service import authenticate_user, create_access_token
 from app.base.get_db import get_db
 from app.auth.models.token import Token
 
-AUTH_VALID = 60
-REFRESH_VALID = (60 * 24 * 31)
+AUTH_VALID = 1140
 
 auth_router = APIRouter(
     prefix='/auth',

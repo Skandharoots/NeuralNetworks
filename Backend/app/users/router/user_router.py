@@ -27,17 +27,3 @@ async def register(dto: RegisterDto, db: Session = Depends(get_db)):
 def user_get(current_user: User = Depends(get_current_active_user)):
     return current_user
 
-
-@user_router.get("/get", status_code=status.HTTP_200_OK, response_model=UserSchema)
-def get_by_email(email: str, db: Session = Depends(get_db)):
-    user = get_user_by_email(email, db)
-    if user is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
-    return user
-
-@user_router.get("/get/{id}", status_code=status.HTTP_200_OK, response_model=UserSchema)
-def get_by_id(id: int, db: Session = Depends(get_db)):
-    user = get_user_by_id(id, db)
-    if user is None:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail="User not found")
-    return user
