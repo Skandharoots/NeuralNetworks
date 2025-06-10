@@ -6,7 +6,6 @@ from sqlalchemy.orm import Session
 from app.base.get_db import get_db
 from app.users.service.user_service import get_user_by_email, get_user_by_id
 from app.auth.utils.utils import get_password_hash
-from typing import Annotated
 
 user_router = APIRouter(
     prefix="/users",

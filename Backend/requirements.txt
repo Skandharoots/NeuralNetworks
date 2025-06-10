@@ -6,3 +6,6 @@ cryptography
 pymysql
 bcrypt
 python-multipart
+torch
+torchvision
+torchaudio
