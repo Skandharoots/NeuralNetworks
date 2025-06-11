@@ -1,6 +1,7 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useEffect, useState } from "react";
+import {useRouter} from "expo-router";
 
 interface AuthProps {
     authState?: { 
@@ -13,7 +14,7 @@ interface AuthProps {
     onRegister?: (firstName: string, lastName: string, userName: string, email: string, password: string) => Promise<any>;
     onLogin?: (email: string, password: string) => Promise<any>;
     onLogout?: () => Promise<any>;
-    onCheck?: () => boolean;
+    onCheck?: () => Promise<any>;
 }
 
 const TOKEN_KEY = "jwtToken";
@@ -41,6 +42,8 @@ export const AuthProvider = ({children}: any) => {
         authenticated: null,
         validUntil: null,
     });
+
+    const router = useRouter();
 
     useEffect(() => {
         const loadUser = async () => {
@@ -73,7 +76,7 @@ export const AuthProvider = ({children}: any) => {
                 }
             });
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.access_token}`;
-            const valid = Date.now() + (1140);
+            const valid = Date.now() + (1000 * 60 * 1140);
             setAuthState({
                 userName: result.data.username,
                 userId: result.data.id,
@@ -122,17 +125,16 @@ export const AuthProvider = ({children}: any) => {
         }
     }
 
-
-
-    const checkActive = () => {
-        const valid = SecureStore.getItem(VALID_UNTIL);
-        let now = new Date().getTime();
-        if (valid && parseInt(valid) < now) {
-            logout();
+    const checkActive = async () => {
+        let now = Date.now();
+        let validUntil = new Date(parseInt(authState.validUntil as unknown as string, 10)).getTime()
+        if (validUntil && (validUntil - now < 0)) {
+            await logout();
+            console.log(false)
             return false;
         }
+        console.log(true)
         return true;
-
     }
 
     const logout = async () => {
@@ -151,6 +153,7 @@ export const AuthProvider = ({children}: any) => {
             authenticated: null,
             validUntil: null,
         })
+        router.navigate('/(tabs)/(account)/login')
     }
 
     const value = {

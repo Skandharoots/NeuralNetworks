@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import React, { Fragment, useState } from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import { Appearance, Platform, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
 import ThemedButton from "../../components/ThemedButtonIrish";
 import ThemedTextInput from "../../components/ThemedTextInput";
@@ -30,7 +30,18 @@ export default function Register() {
     const [userNameErrorMessage, setUserNameErrorMessage] = useState('');
 
     const router = useRouter();
-    const { onRegister } = useAuth();
+    const { onRegister, onCheck } = useAuth();
+
+    useEffect(() => {
+        async function f() {
+            if (onCheck) {
+                const result = await onCheck();
+                if(result)
+                    router.navigate('/(tabs)/(account)/account')
+            }
+        }
+        f();
+    }, []);
 
     const validate = () => {
 

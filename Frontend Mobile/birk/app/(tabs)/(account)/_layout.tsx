@@ -4,18 +4,12 @@ import { Tabs, useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Appearance } from "react-native";
 
-function _Layout() {
+const _Layout = () => {
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const { authState } = useAuth();
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const router = useRouter();
-    
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    useEffect(() => {
-        // eslint-disable-next-line no-unused-expressions
-        authState?.authenticated ? router.navigate('/(tabs)/(account)/account') : router.navigate('/(tabs)/(account)/login')
-    }, [authState, router])
 
     return (
             <Tabs
@@ -52,6 +46,12 @@ function _Layout() {
                     name="register"
                     options={{
                         title: 'Register',
+                    }}
+                />
+                <Tabs.Screen
+                    name="settings"
+                    options={{
+                        title: 'Settings',
                     }}
                 />
             </Tabs>

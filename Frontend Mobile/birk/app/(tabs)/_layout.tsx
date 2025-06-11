@@ -4,10 +4,7 @@ import { Appearance } from "react-native";
 import { useAuth } from '../context/AuthContext';
 
 
-export default function _Layout() {
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { authState, onLogout } = useAuth();
+const _Layout = ()=> {
 
     return (
             <Tabs
@@ -19,7 +16,7 @@ export default function _Layout() {
                         backgroundColor: 'transparent', 
                         left: 0,
                         bottom: 30,
-                        height: 'auto',
+                        height: '5%',
                         paddingBottom: 0,
                         borderRadius: 60,
                         right: 0,
@@ -71,3 +68,5 @@ export default function _Layout() {
             </Tabs>
     )
 }
+
+export default _Layout;

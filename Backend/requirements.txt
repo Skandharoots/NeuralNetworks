@@ -12,3 +12,4 @@ torchaudio
 kagglehub
 pandas
 timm
+matplotlib

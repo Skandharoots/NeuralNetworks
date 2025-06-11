@@ -1,6 +1,6 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from 'expo-router';
-import React, { Fragment, useState } from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import { Appearance, Platform, SafeAreaView, StatusBar, Text, View } from "react-native";
 import ThemedButton from '../../components/ThemedButtonIrish';
 import ThemedButtonWhiteOutline from "../../components/ThemedButtonWhiteOutline";
@@ -19,7 +19,19 @@ export default function Login() {
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
     const router = useRouter();
-    const { onLogin } = useAuth();
+    const { onLogin, onCheck } = useAuth();
+
+
+    useEffect(() => {
+        async function f() {
+            if (onCheck) {
+                const result = await onCheck();
+                if(result)
+                  router.navigate('/(tabs)/(account)/account')
+            }
+        }
+        f();
+    }, []);
     
     const validate = () => {
         let isValid = true;
@@ -71,11 +83,11 @@ export default function Login() {
                         <Text className="text-4xl font-semibold text-text-light dark:text-text-dark mb-10 ">Login</Text>
                         <ThemedTextInput autoCapitalize="none" placeholder={"Email"} value={userName} onChangeText={setUserName} keyboard={"email-address"}/>
                         {userNameError &&
-                            <Text className="text-xl w-['95%'] text-errorBtn-light">{userNameErrorMessage}</Text>
+                            <Text className="text-sm w-['95%'] text-errorBtn-light">{userNameErrorMessage}</Text>
                         }
                         <ThemedTextInput placeholder={"Password"} value={password} onChangeText={setPassword} secureTextEntry={true}/>
                         {passwordError &&
-                            <Text className="text-xl w-['95%'] mb-4 text-errorBtn-light">{passwordErrorMessage}</Text>
+                            <Text className="text-sm w-['95%'] mb-4 text-errorBtn-light">{passwordErrorMessage}</Text>
                         }
                         <ThemedButton title={"Login"} icon={<Ionicons name="log-in-outline" size={22} />} onPress={login}/>
                     </View>
