@@ -26,7 +26,7 @@ async def get_birthmark(current_user: User = Depends(get_current_active_user), d
 
 @birthmark_router.get("/get/image/{id}", status_code=status.HTTP_200_OK, response_model=None)
 async def get_image(id: int, current_user: User = Depends(get_current_active_user),):
-    return read_from_azure(str(id))
+    return read_from_azure(str(id), "birk")
 
 @birthmark_router.delete("/delete/{id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_birk(id: int, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):

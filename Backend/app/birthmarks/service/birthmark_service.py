@@ -40,55 +40,47 @@ async def create_birthmark(file: UploadFile, current_user: User, db: Session = D
         db.add(birthmark_db)
         db.commit()
         db.refresh(birthmark_db)
-        await upload_to_azure(file, str(birthmark_db.id))
+        await upload_to_azure(file, str(birthmark_db.id), "birk")
         return birthmark_db
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 def delete_birthmark(id: int, db: Session = Depends(get_db)):
+    birk = db.query(Birthmark).filter(Birthmark.id == id).first()
+    if birk is None:
+        raise HTTPException(status_code=404, detail="Birthmark not found")
     db.query(Birthmark).filter(Birthmark.id == id).delete()
     db.commit()
 
-    container_name = "birk"
-    conn_str = settings.AZURE_CONN_STR
-    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=str(id))
-    blob_client.delete_blob()
+    delete_from_azure(str(id), "birk")
 
     return "Deleted"
 
-async def upload_to_azure(file: UploadFile, path: str):
-    container_name = "birk"
+async def upload_to_azure(file: UploadFile, path: str, container_name: str):
     conn_str = settings.AZURE_CONN_STR
     blob_service_client = BlobServiceClient.from_connection_string(conn_str)
     try:
         container_client = blob_service_client.create_container(name=container_name)
     except ResourceExistsError:
         print('A container with this name already exists')
-    # blobClient = blob_service_client.get_blob_client(container=container_name, blob=name)
-    # if blobClient:
-    #     print("blob already exists")
-    # else:
-    #     print("blob not exists")
-
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=path)
-
     try:
         file_bytes = await file.read()  # Read the file content as bytes
         container_client = blob_service_client.get_container_client(container=container_name)
         with BytesIO(file_bytes) as byte_stream:
-            return container_client.upload_blob(name=path, data=byte_stream)
+            return container_client.upload_blob(name=path, data=byte_stream, overwrite=True)
     except Exception:
         raise HTTPException(status_code=500, detail='Something went wrong uploading file to Azure')
 
 
-def read_from_azure(path: str):
+def read_from_azure(path: str, container_name: str):
     connect_str = settings.AZURE_CONN_STR
 
     blob_service_client = BlobServiceClient.from_connection_string(connect_str)
-    container_name = "birk"
     blob_client = blob_service_client.get_blob_client(container=container_name, blob=path)
     return blob_client.download_blob().readall().decode('ISO-8859-1')
 
-
-
+def delete_from_azure(id: str, container_name: str):
+    conn_str = settings.AZURE_CONN_STR
+    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
+    blob_client = blob_service_client.get_blob_client(container=container_name, blob=str(id))
+    blob_client.delete_blob()
