@@ -9,6 +9,7 @@ print(os.getenv('MYSQL_USERNAME'))
 settings = Settings(
 	ENVIRONMENT="local",
 	JWT_SECRET_KEY=os.getenv("JWT_SECRET_KEY", ""),
+	AZURE_CONN_STR=os.getenv("AZURE_CONN_STR", ""),
 	MYSQL_USERNAME=os.getenv("MYSQL_USERNAME", ""),
 	MYSQL_PASSWORD=os.getenv("MYSQL_PASSWORD", ""),
 	MYSQL_SERVER=os.getenv("MYSQL_SERVER", ""),

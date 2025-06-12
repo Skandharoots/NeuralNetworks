@@ -116,7 +116,7 @@ channels = 3
 img_shape = (img_size[0], img_size[1], channels)
 class_count = len(list(train_gen.class_indices.keys())) # to define number of classes in dense layer
 
-# create pre-trained model (you can built on pretrained model such as :  efficientnet, VGG , Resnet )
+# create pre-trained models (you can built on pretrained models such as :  efficientnet, VGG , Resnet )
 # we will use efficientnetb3 from EfficientNet family.
 base_model = tf.keras.applications.efficientnet.EfficientNetB0(include_top= False, weights= "imagenet", input_shape= img_shape, pooling= 'max')
 # base_model.trainable = False
@@ -222,5 +222,5 @@ plt.show()
 # Classification report
 print(classification_report(test_gen.classes, y_pred, target_names= classes))
 
-#Save the model
-model.save('Skin Cancer.h5')
+#Save the models
+model.save('Model.h5')

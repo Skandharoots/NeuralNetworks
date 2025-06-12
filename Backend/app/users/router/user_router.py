@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, File, Form
 from app.auth.service.auth_service import get_current_active_user
 from app.users.models.dto import RegisterDto, UserDto, UserSchema
 from app.users.models.user import User

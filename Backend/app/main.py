@@ -4,6 +4,7 @@ import app.users.models
 from app.users.models.user import Base
 from app.users.router.user_router import user_router
 from app.auth.router.auth_router import auth_router
+from app.birthmarks.router.birthmark_router import birthmark_router
 from fastapi.middleware.cors import CORSMiddleware
 
 openapi_tags=[
@@ -13,7 +14,11 @@ openapi_tags=[
     },
     {
         "name": "Auth",
-        "description": "User authentication",
+        "description": "User authentication app",
+    },
+    {
+        "name": "Birthmarks",
+        "description": "Birthmarks app",
     },
     {
         "name": "Home",
@@ -35,6 +40,8 @@ Base.metadata.create_all(bind=engine)
 
 app.include_router(user_router, prefix='/api', tags=["Users"])
 app.include_router(auth_router, prefix='/api', tags=["Auth"])
+app.include_router(birthmark_router, prefix='/api', tags=["Birthmarks"])
+
 
 
 @app.get("/")
