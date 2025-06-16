@@ -41,6 +41,8 @@ async def create_birthmark(file: UploadFile, fileName: str, current_user: User, 
     
 def get_image_birthmark(id: int, db: Session = Depends(get_db)):
     birthmark = db.query(Birthmark).filter(Birthmark.id == id).first()
+    if birthmark is None:
+        raise HTTPException(status_code=404, detail="Birthmark not found")
     return birthmark.picture
 
 def delete_birthmark(id: int, db: Session = Depends(get_db)):
