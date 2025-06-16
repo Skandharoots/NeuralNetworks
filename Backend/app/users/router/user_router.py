@@ -1,12 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status, File, Form, UploadFile
 from auth.service.auth_service import get_current_active_user
-from birthmarks.service.birthmark_service import read_from_azure
 from users.models.dto import RegisterDto, UserDto, UserSchema, UpdateDto, UserImgDto
 from users.models.user import User
 from sqlalchemy.orm import Session
 from base.get_db import get_db
-from users.service.user_service import get_user_by_email, get_user_by_id, update_user_by_id, delete_user_by_id, \
-    upload_profile_picture, get_profile_picture
+from users.service.user_service import update_user_by_id, delete_user_by_id, picture_upload, picture_get
 from auth.utils.utils import get_password_hash
 
 user_router = APIRouter(
@@ -39,9 +37,9 @@ async def user_delete(current_user: User = Depends(get_current_active_user), db:
     delete_user_by_id(current_user.id, db)
 
 @user_router.post("/picture", response_model=None)
-async def upload_picture(file: UploadFile = File(max), current_user: User = Depends(get_current_active_user)):
-    return await upload_profile_picture(current_user.id, file)
+async def upload_picture(fileName: str, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    return picture_upload(current_user.id, fileName, db)
 
 @user_router.get("/picture", response_model=None)
-async def get_picture(current_user: User = Depends(get_current_active_user)):
-    return read_from_azure(str(current_user.id), "pictures")
+async def get_picture(current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    return picture_get(current_user.id, db)

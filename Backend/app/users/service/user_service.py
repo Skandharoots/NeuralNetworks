@@ -2,9 +2,7 @@ from sqlalchemy.orm.sync import update
 
 from base.get_db import get_db
 from sqlalchemy.orm import Session 
-from fastapi import Depends, HTTPException, status, UploadFile
-
-from birthmarks.service.birthmark_service import upload_to_azure, read_from_azure
+from fastapi import Depends, HTTPException
 from users.models.dto import RegisterDto, UpdateDto
 from users.models.user import User
 
@@ -35,8 +33,17 @@ def delete_user_by_id(id: int, db: Session = Depends(get_db)):
     db.refresh(userdb)
     return "User deleted"
 
-async def upload_profile_picture(id: int, file: UploadFile):
-    await upload_to_azure(file, str(id), "pictures")
+def picture_upload(id: int, fileName: str, db: Session = Depends(get_db)):
+    users = db.query(User).filter(User.id == id).first()
+    if not users:
+        raise HTTPException(status_code=404, detail="User not found")
+    users.profile_picture = fileName
+    db.commit()
+    db.refresh(users)
+    return users
 
-async def get_profile_picture(id: int, container_name: str):
-    return read_from_azure(str(id), container_name)
+def picture_get(id: int, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.id == id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found, cannot load picture")
+    return db_user.profile_picture

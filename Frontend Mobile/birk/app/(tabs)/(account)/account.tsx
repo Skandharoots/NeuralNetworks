@@ -1,10 +1,10 @@
 import ThemedButtonIrish from "@/app/components/ThemedButtonIrish";
 import { useAuth } from "@/app/context/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {useFocusEffect, useRouter} from "expo-router";
-import {Fragment, useEffect, useState} from "react";
-import {Appearance, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity, View} from "react-native";
+import { useFocusEffect, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
+import { Fragment, useState } from "react";
+import { Appearance, Platform, SafeAreaView, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
 
 export default function Account() {
@@ -16,7 +16,6 @@ export default function Account() {
         async function f() {
             if (onCheck) {
                 let c = await onCheck();
-                console.log(c);
                 if(!c) {
                     setDisplay(false);
                     router.navigate('/(tabs)/(account)/login')

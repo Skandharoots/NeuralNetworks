@@ -6,10 +6,9 @@ cryptography
 pymysql
 bcrypt
 python-multipart
-torch
-torchvision
-torchaudio
+tensorflow
 kagglehub
 pandas
 timm
 matplotlib
+pydantic-settings

@@ -1,8 +1,4 @@
-import io
-
 import tensorflow as tf
-from azure.core.exceptions import ResourceExistsError
-from azure.storage.blob import BlobServiceClient, ContainerClient, BlobType
 from tensorflow.keras.optimizers import Adamax
 from base.get_db import get_db
 from sqlalchemy.orm import Session
@@ -10,17 +6,13 @@ from fastapi import Depends, UploadFile, HTTPException
 from birthmarks.models.birthmark import Birthmark
 from users.models.user import User
 from PIL import Image
-from core.config_loader import settings
-from io import BytesIO
 import os
-import base64
-
 
 
 def get_birthmarks_by_user_id(current_user: User, db: Session = Depends(get_db)):
     return db.query(Birthmark).filter(Birthmark.user_id == current_user.id)
 
-async def create_birthmark(file: UploadFile, current_user: User, db: Session = Depends(get_db)):
+async def create_birthmark(file: UploadFile, fileName: str, current_user: User, db: Session = Depends(get_db)):
     try:
         image = Image.open(file.file).convert('RGB')
         img = image.resize((224, 224))
@@ -38,14 +30,18 @@ async def create_birthmark(file: UploadFile, current_user: User, db: Session = D
         prediction = class_labels[tf.argmax(score)]
         birthmark_db = Birthmark()
         birthmark_db.user_id = current_user.id
+        birthmark_db.picture = fileName
         birthmark_db.diagnosis = prediction
         db.add(birthmark_db)
         db.commit()
         db.refresh(birthmark_db)
-        await upload_to_azure(file, str(birthmark_db.id), "birk")
         return birthmark_db
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+def get_image_birthmark(id: int, db: Session = Depends(get_db)):
+    birthmark = db.query(Birthmark).filter(Birthmark.id == id).first()
+    return birthmark.picture
 
 def delete_birthmark(id: int, db: Session = Depends(get_db)):
     birk = db.query(Birthmark).filter(Birthmark.id == id).first()
@@ -54,38 +50,4 @@ def delete_birthmark(id: int, db: Session = Depends(get_db)):
     db.query(Birthmark).filter(Birthmark.id == id).delete()
     db.commit()
 
-    delete_from_azure(str(id), "birk")
-
     return "Deleted"
-
-async def upload_to_azure(file: UploadFile, path: str, container_name: str):
-    conn_str = settings.AZURE_CONN_STR
-    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
-    try:
-        container_client = blob_service_client.create_container(name=container_name)
-    except ResourceExistsError:
-        print('A container with this name already exists')
-    try:
-        file_bytes = await file.read()  # Read the file content as bytes
-        container_client = blob_service_client.get_container_client(container=container_name)
-        with BytesIO(file_bytes) as byte_stream:
-            return container_client.upload_blob(name=path, data=byte_stream, overwrite=True, blob_type="BlockBlob")
-    except Exception:
-        raise HTTPException(status_code=500, detail='Something went wrong uploading file to Azure')
-
-
-def read_from_azure(path: str, container_name: str):
-    connect_str = settings.AZURE_CONN_STR
-
-    blob_service_client = BlobServiceClient.from_connection_string(connect_str)
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=path)
-    num_bytes = blob_client.download_blob().readall()
-    encoded = base64.b64encode(num_bytes).decode()
-    return encoded
-    
-
-def delete_from_azure(id: str, container_name: str):
-    conn_str = settings.AZURE_CONN_STR
-    blob_service_client = BlobServiceClient.from_connection_string(conn_str)
-    blob_client = blob_service_client.get_blob_client(container=container_name, blob=str(id))
-    blob_client.delete_blob()

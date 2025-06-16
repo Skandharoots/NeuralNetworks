@@ -66,12 +66,11 @@ export default function Account() {
         })
 
         axios.get('/api/users/picture', {
-            responseType: 'blob',
             headers: {
                 'Authorization': 'Bearer ' + SecureStore.getItem('jwtToken'),
             }
         }).then(r => {
-                setPic('data:image/jpeg;base64,' + r.data)
+                setPic(r.data)
             }).catch((e) => console.log(e))
     }, []);
 
@@ -88,16 +87,18 @@ export default function Account() {
     }
 
     const saveImage = (image: any) => {
-        const form = new FormData();
-        form.append("file", image);
-        axios.post("/api/users/picture", form, {
+        
+        axios.post("/api/users/picture", {}, {
+            params: {
+                fileName: image.uri,
+            },
             headers: {
                 "Content-Type": "multipart/form-data",
                 'Authorization': 'Bearer ' + SecureStore.getItem('jwtToken'),
             }
         }).then(() => {
             alert("Photo uploaded successfully");
-            setPic(image);
+            setPic(image.uri);
         }).catch((e) => {
             console.log(e.response.data);
         })
