@@ -7,7 +7,7 @@ import './globals.css';
 
 export default function App() {
 
-  axios.defaults.baseURL = "http://localhost:8000";
+  axios.defaults.baseURL = "http://localhost:8080";
   axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
   axios.defaults.headers["Access-Control-Allow-Origin"] = "http://localhost:8081";
   axios.defaults.withCredentials = true;

@@ -1,7 +1,7 @@
 import datetime
 
 from sqlalchemy import Integer, String, BLOB, Column, Date, ForeignKey
-from app.base.database import Base
+from base.database import Base
 
 
 class Birthmark(Base):

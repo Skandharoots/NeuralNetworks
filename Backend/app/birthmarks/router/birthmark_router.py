@@ -1,13 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
-from app.auth.service.auth_service import get_current_active_user
+from auth.service.auth_service import get_current_active_user
 from sqlalchemy.orm import Session
-from app.base.get_db import get_db
-from app.birthmarks.models.birthmark import Birthmark
-from app.birthmarks.models.dto import BirthmarkDto, BirthmarkImgDto
-from app.birthmarks.service.birthmark_service import get_birthmarks_by_user_id, create_birthmark, delete_birthmark, read_from_azure
+from base.get_db import get_db
+from birthmarks.models.birthmark import Birthmark
+from birthmarks.models.dto import BirthmarkDto, BirthmarkImgDto
+from birthmarks.service.birthmark_service import get_birthmarks_by_user_id, create_birthmark, delete_birthmark, read_from_azure
 from typing import Annotated
 
-from app.users.models.user import User
+from users.models.user import User
 
 birthmark_router = APIRouter(
     prefix="/birthmarks",

@@ -57,6 +57,10 @@ module.exports = {
                 light: 'rgba(184, 184, 184, 0.4)',
                 dark: 'rgba(255, 255, 255, 0.2)',
             },
+            camera: {
+                light: 'rgb(184, 184, 184)',
+                dark: 'rgb(255, 255, 255)',
+            }
       },
     },
   },

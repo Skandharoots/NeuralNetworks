@@ -39,6 +39,9 @@ class UpdateDto(BaseModel):
         pattern=r"^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$"
     )
 
+class UserImgDto(BaseModel):
+    img: str
+
 class UserDto(BaseModel):
     first_name: str
     last_name: str

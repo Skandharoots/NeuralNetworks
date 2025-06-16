@@ -2,14 +2,14 @@ from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from app.users.models.user import User
-from app.auth.models.token import TokenData
-from app.auth.utils.utils import verify_password
-from app.users.service.user_service import get_user_by_email
-from app.base.get_db import get_db
+from users.models.user import User
+from auth.models.token import TokenData
+from auth.utils.utils import verify_password
+from users.service.user_service import get_user_by_email
+from base.get_db import get_db
 from typing import Annotated, Optional
 import jwt
-from app.core.config_loader import settings
+from core.config_loader import settings
 
 SECRET_KEY = settings.JWT_SECRET_KEY
 AUTH_VALID = 60

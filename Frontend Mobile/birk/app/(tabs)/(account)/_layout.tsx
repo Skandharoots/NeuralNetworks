@@ -30,30 +30,6 @@ const _Layout = () => {
                     },
                 }}  
             >
-                    <Tabs.Screen
-                    name="login"
-                    options={{
-                        title: 'Login',
-                        }}
-                />
-                <Tabs.Screen
-                    name="account"
-                    options={{
-                        title: 'Account',
-                        }}
-                />
-                <Tabs.Screen
-                    name="register"
-                    options={{
-                        title: 'Register',
-                    }}
-                />
-                <Tabs.Screen
-                    name="settings"
-                    options={{
-                        title: 'Settings',
-                    }}
-                />
             </Tabs>
     )
 }

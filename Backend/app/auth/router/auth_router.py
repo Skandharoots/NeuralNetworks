@@ -3,11 +3,11 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from app.users.service.user_service import get_user_by_email
-from app.users.models.user import User
-from app.auth.service.auth_service import authenticate_user, create_access_token, get_current_active_user
-from app.base.get_db import get_db
-from app.auth.models.token import Token
+from users.service.user_service import get_user_by_email
+from users.models.user import User
+from auth.service.auth_service import authenticate_user, create_access_token, get_current_active_user
+from base.get_db import get_db
+from auth.models.token import Token
 
 AUTH_VALID = 1140
 

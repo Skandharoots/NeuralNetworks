@@ -1,4 +1,4 @@
-from app.core.config import Settings
+from core.config import Settings
 from dotenv import load_dotenv
 import os
 

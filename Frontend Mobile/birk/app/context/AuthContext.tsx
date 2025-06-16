@@ -1,7 +1,6 @@
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import { createContext, useContext, useEffect, useState } from "react";
-import {useRouter} from "expo-router";
 
 interface AuthProps {
     authState?: { 
@@ -43,8 +42,6 @@ export const AuthProvider = ({children}: any) => {
         validUntil: null,
     });
 
-    const router = useRouter();
-
     useEffect(() => {
         const loadUser = async () => {
             const token = SecureStore.getItem("jwtToken");
@@ -76,7 +73,7 @@ export const AuthProvider = ({children}: any) => {
                 }
             });
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.access_token}`;
-            const valid = Date.now() + (1000 * 60 * 1140);
+            const valid = Date.now() + (1000 * 60 * 60 * 1140);
             setAuthState({
                 userName: result.data.username,
                 userId: result.data.id,
@@ -127,14 +124,18 @@ export const AuthProvider = ({children}: any) => {
 
     const checkActive = async () => {
         let now = Date.now();
-        let validUntil = new Date(parseInt(authState.validUntil as unknown as string, 10)).getTime()
-        if (validUntil && (validUntil - now < 0)) {
-            await logout();
-            console.log(false)
+        let valid = await SecureStore.getItemAsync("validUntil");
+        if (valid) {
+            let validUntil = new Date(parseInt(valid)).getTime()
+            if (validUntil && validUntil - now < 0) {
+                await logout();
+                return false;
+            } else {
+                return true;
+            }
+        } else {
             return false;
         }
-        console.log(true)
-        return true;
     }
 
     const logout = async () => {
@@ -153,7 +154,6 @@ export const AuthProvider = ({children}: any) => {
             authenticated: null,
             validUntil: null,
         })
-        router.navigate('/(tabs)/(account)/login')
     }
 
     const value = {

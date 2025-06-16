@@ -1,17 +1,19 @@
+import io
+
 import tensorflow as tf
 from azure.core.exceptions import ResourceExistsError
 from azure.storage.blob import BlobServiceClient, ContainerClient, BlobType
-from tensorflow import keras
 from tensorflow.keras.optimizers import Adamax
-from app.base.get_db import get_db
+from base.get_db import get_db
 from sqlalchemy.orm import Session
 from fastapi import Depends, UploadFile, HTTPException
-from app.birthmarks.models.birthmark import Birthmark
-from app.users.models.user import User
+from birthmarks.models.birthmark import Birthmark
+from users.models.user import User
 from PIL import Image
-from app.core.config_loader import settings
+from core.config_loader import settings
 from io import BytesIO
 import os
+import base64
 
 
 
@@ -67,7 +69,7 @@ async def upload_to_azure(file: UploadFile, path: str, container_name: str):
         file_bytes = await file.read()  # Read the file content as bytes
         container_client = blob_service_client.get_container_client(container=container_name)
         with BytesIO(file_bytes) as byte_stream:
-            return container_client.upload_blob(name=path, data=byte_stream, overwrite=True)
+            return container_client.upload_blob(name=path, data=byte_stream, overwrite=True, blob_type="BlockBlob")
     except Exception:
         raise HTTPException(status_code=500, detail='Something went wrong uploading file to Azure')
 
@@ -77,7 +79,10 @@ def read_from_azure(path: str, container_name: str):
 
     blob_service_client = BlobServiceClient.from_connection_string(connect_str)
     blob_client = blob_service_client.get_blob_client(container=container_name, blob=path)
-    return blob_client.download_blob().readall().decode('ISO-8859-1')
+    num_bytes = blob_client.download_blob().readall()
+    encoded = base64.b64encode(num_bytes).decode()
+    return encoded
+    
 
 def delete_from_azure(id: str, container_name: str):
     conn_str = settings.AZURE_CONN_STR

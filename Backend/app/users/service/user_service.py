@@ -1,12 +1,12 @@
 from sqlalchemy.orm.sync import update
 
-from app.base.get_db import get_db
+from base.get_db import get_db
 from sqlalchemy.orm import Session 
 from fastapi import Depends, HTTPException, status, UploadFile
 
-from app.birthmarks.service.birthmark_service import upload_to_azure, read_from_azure
-from app.users.models.dto import RegisterDto, UpdateDto
-from app.users.models.user import User
+from birthmarks.service.birthmark_service import upload_to_azure, read_from_azure
+from users.models.dto import RegisterDto, UpdateDto
+from users.models.user import User
 
 def get_user_by_email(email: str, db: Session = Depends(get_db)):
     return db.query(User).filter(User.email == email).first()
