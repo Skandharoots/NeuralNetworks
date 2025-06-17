@@ -5,3 +5,8 @@ The additional technologies used are Tensorflow, Swagger and a CSS framework Tai
 
 ## Creators
 Marek Kopania
+
+## Model results
+
+![Figure_1](https://github.com/user-attachments/assets/51c25539-1514-4eb9-b92a-bffe0e7f7665)
+![Figure_2](https://github.com/user-attachments/assets/60788e1d-f2b5-401d-b41b-6ec0350e6787)
