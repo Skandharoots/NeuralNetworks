@@ -4,7 +4,7 @@ from users.models.dto import RegisterDto, UserDto, UserSchema, UpdateDto, UserIm
 from users.models.user import User
 from sqlalchemy.orm import Session
 from base.get_db import get_db
-from users.service.user_service import update_user_by_id, delete_user_by_id, picture_upload, picture_get
+from users.service.user_service import update_user_by_id, delete_user_by_id, picture_upload, picture_get, picture_delete
 from auth.utils.utils import get_password_hash
 
 user_router = APIRouter(
@@ -43,3 +43,7 @@ async def upload_picture(fileName: str, current_user: User = Depends(get_current
 @user_router.get("/picture", response_model=None)
 async def get_picture(current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
     return picture_get(current_user.id, db)
+
+@user_router.delete("/picture", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_picture(current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    return picture_delete(current_user.id, db)

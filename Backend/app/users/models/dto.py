@@ -46,6 +46,7 @@ class UserDto(BaseModel):
     first_name: str
     last_name: str
     username: str
+    email: str
 
 class UserSchema(UserDto):
     id: int

@@ -1,3 +1,4 @@
+from sqlalchemy import null
 from sqlalchemy.orm.sync import update
 
 from base.get_db import get_db
@@ -19,6 +20,7 @@ def update_user_by_id(id: int, user: UpdateDto, db: Session = Depends(get_db)):
     userdb.email = user.email
     userdb.first_name = user.first_name
     userdb.last_name = user.last_name
+    userdb.username = user.username
     db.commit()
     db.refresh(userdb)
     return userdb
@@ -47,3 +49,12 @@ def picture_get(id: int, db: Session = Depends(get_db)):
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found, cannot load picture")
     return db_user.profile_picture
+
+def picture_delete(id: int, db: Session = Depends(get_db)):
+    db_user = db.query(User).filter(User.id == id).first()
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found, cannot load picture")
+    db_user.profile_picture = ""
+    db.commit()
+    db.refresh(db_user)
+    return "Picture remmoved"

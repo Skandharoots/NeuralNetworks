@@ -49,8 +49,8 @@ module.exports = {
             },
             shadowLink: {
                 main: 'rgba(184, 184, 184, 0.2)',
-                light: 'rgba(184, 184, 184, 0.2)',
-                dark: 'rgba(255, 255, 255, 0.4)',
+                light: 'rgb(184, 184, 184)',
+                dark: 'rgb(255, 255, 255)',
             },
             shadow: {
                 main: 'rgba(184, 184, 184, 0.2)',
