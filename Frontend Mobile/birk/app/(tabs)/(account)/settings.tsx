@@ -20,10 +20,9 @@ import {
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
 
-
 export default function Account() {
 
-    const [pic, setPic] = useState('a');
+    const [pic, setPic] = useState('');
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [username, setUsername] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
@@ -34,6 +33,9 @@ export default function Account() {
     const { authState, onLogout, onCheck } = useAuth();
     const router = useRouter();
     const [display, setDisplay] = useState<boolean>(false);
+
+    const defaultImage = require('../../../assets/images/user.png');
+
 
     useFocusEffect(() => {
         async function f() {
@@ -71,7 +73,9 @@ export default function Account() {
             }
         }).then(r => {
                 setPic(r.data)
-            }).catch((e) => console.log(e))
+            }).catch((e) => {
+                alert(e)
+            })
     }, []);
 
 
@@ -145,15 +149,23 @@ export default function Account() {
             {display && (
                 <>
                     <GestureHandlerRootView>
-                        <View className="h-['95%'] w-'100%'] border-2 border-background-light">
+                        <View className="h-['95%'] w-'100%']">
                             <ScrollView>
-                                <View className="w-['100%'] h-['95%'] border-2 border-background-light">
+                                <View className="w-['100%'] h-['95%'">
                                     <View className="flex-row w-['100%'] pl-4 pr-4 items-center justify-between bg-background-light dark:bg-background-dark " >
                                         <Text onPress={() => router.navigate('/(tabs)/(account)/account')} className="w-['33%']"><Ionicons name="arrow-back-outline" size={28} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}/></Text>
                                     </View>
                                     <View className="flex-1 w-['100%'] h-['100%'] items-center justify-start bg-background-light dark:bg-background-dark " >
-                                        <View className="border-4 rounded-['50%'] border-shadowLink-light dark:border-shadowLink-dark w-52 h-52">
-                                            <Image style={{objectFit: 'cover', width: '100%', height: '100%', borderRadius: '50%'}} resizeMode={"contain"} source={{uri: pic}}></Image>
+                                        <View className="border-4 rounded-['50%'] bg-white border-shadowLink-light dark:border-shadowLink-dark w-52 h-52">
+                                            <Image style={{
+                                                objectFit: 'cover', 
+                                                width: '100%', 
+                                                height: '100%', 
+                                                borderRadius: '50%'
+                                                }}
+                                                    resizeMode={"contain"} 
+                                                    source={pic ? {uri: pic} : defaultImage}
+                                                />
                                             <View className="dark:bg-camera-dark bg-camera-light rounded-['50%'] w-10 h-10 mt-36 absolute self-end justify-center items-center">
                                                 <Ionicons onPress={openDrawer} name="camera-outline" size={24}
                                                           style={{color: Appearance.getColorScheme() === 'dark'
@@ -171,7 +183,7 @@ export default function Account() {
                                 <>
                                     <Pressable onPress={openDrawer} className="h-fit w-['100%'] absolute bottom-0">
                                         <Animated.View
-                                            className="w-['100%'] bottom-0 fixed gap-3.5 h-fit pl-8 pr-8 pb-8 rounded-t-3xl bg-camera-light dark:bg-camera-dark justify-center items-center"
+                                            className="w-['100%'] bottom-0 fixed gap-3.5 h-fit pl-8 pr-8 pb-8 rounded-t-3xl bg-shadowLink-dark dark:bg-shadowLink-light justify-center items-center"
                                             entering={SlideInDown.springify().damping(15)}
                                             exiting={SlideOutDown.springify().damping(15)}
                                         >

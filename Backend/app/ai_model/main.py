@@ -1,3 +1,4 @@
+# import system libs
 import os
 import time
 import shutil
@@ -9,8 +10,6 @@ import kagglehub
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from tensorflow.python.keras.engine.training_generator_v1 import predict_generator
-
 sns.set_style('darkgrid')
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
@@ -80,7 +79,7 @@ print("Testing...")
 print(test_df)
 
 # crobed image size
-batch_size = 66
+batch_size = 16
 img_size = (224, 224)
 channels = 3
 img_shape = (img_size[0], img_size[1], channels)
@@ -100,8 +99,8 @@ images, labels = next(train_gen)      # get a batch size samples from the genera
 
 plt.figure(figsize= (20, 20))
 
-for i in range(66):
-    plt.subplot(9, 9, i + 1)
+for i in range(16):
+    plt.subplot(4, 4, i + 1)
     image = images[i] / 255       # scales data to range (0 - 255)
     plt.imshow(image)
     index = np.argmax(labels[i])  # get image index
@@ -124,7 +123,7 @@ base_model = tf.keras.applications.efficientnet.EfficientNetB0(include_top= Fals
 model = Sequential([
     base_model,
     BatchNormalization(axis= -1, momentum= 0.99, epsilon= 0.001),
-    Dense(256, kernel_regularizer= regularizers.l2(l2=0.016), activity_regularizer= regularizers.l1(0.006),
+    Dense(256, kernel_regularizer= regularizers.l2(0.016), activity_regularizer= regularizers.l1(0.006),
                 bias_regularizer= regularizers.l1(0.006), activation= 'relu'),
     Dropout(rate= 0.45, seed= 123),
     Dense(class_count, activation= 'softmax')
@@ -190,7 +189,7 @@ print('-' * 20)
 print("Test Loss: ", test_score[0])
 print("Test Accuracy: ", test_score[1])
 
-preds = model.predict(test_gen, steps= test_steps)
+preds = model.predict(test_gen)
 y_pred = np.argmax(preds, axis=1)
 
 g_dict = test_gen.class_indices
@@ -222,5 +221,5 @@ plt.show()
 # Classification report
 print(classification_report(test_gen.classes, y_pred, target_names= classes))
 
-#Save the models
-model.save('Model.h5')
+# Save the models
+model.save('model/Model.h5')
