@@ -234,10 +234,15 @@ export default function Account() {
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark"><Ionicons name="create-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'} /></Text>
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark ">    Update account</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity className="p-4 mt-8 flex-row w-['80%'] justify-start items-center border-errorBtn-dark dark:border-errorBtn-light border rounded-2xl" onPress={createTwoButtonAlert}>
+                                        <TouchableOpacity className="p-4 mt-8 flex-row w-['80%'] justify-start items-center border-irish-light dark:border-irish-dark border rounded-2xl" onPress={logout}>
+                                            <Text className="text-lg font-semibold text-text-light dark:text-text-dark"><Ionicons name="log-out-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'} /></Text>
+                                            <Text className="text-lg font-semibold text-text-light dark:text-text-dark ">    Logout</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity className="p-4 mt-20 flex-row w-['80%'] justify-start items-center border-errorBtn-dark dark:border-errorBtn-light border rounded-2xl" onPress={createTwoButtonAlert}>
                                             <Text className="text-lg font-semibold text-errorBtn-main dark:text-errorBtn-light"><Ionicons name="trash-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'rgb(193,56,56)' : 'rgb(159,20,20)'} /></Text>
                                             <Text className="text-lg font-semibold text-errorBtn-main dark:text-errorBtn-light ">    Delete account</Text>
                                         </TouchableOpacity>
+                                        
                                     </View>
                                 </View>
                             </ScrollView>
