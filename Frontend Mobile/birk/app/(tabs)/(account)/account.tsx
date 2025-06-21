@@ -88,10 +88,10 @@ export default function Account() {
             }
         }).then(r => {
             let base64ImageString = Buffer.from(r.data, 'binary').toString('base64')
-            setPic("data:image/*;base64," + base64ImageString)
-        }).catch((e) => {
-                setPic('')
-            })
+            setPic("data:svg+xml;base64," + base64ImageString)
+        }).catch(() => {
+            setPic('')
+        })
     }
 
     const logout = async () => {
