@@ -37,8 +37,8 @@ async def user_delete(current_user: User = Depends(get_current_active_user), db:
     delete_user_by_id(current_user.id, db)
 
 @user_router.post("/picture", response_model=None)
-async def upload_picture(fileName: str, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
-    return picture_upload(current_user.id, fileName, db)
+async def upload_picture(file: UploadFile = File(...), current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    return await picture_upload(current_user.id, file, db)
 
 @user_router.get("/picture", response_model=None)
 async def get_picture(current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):

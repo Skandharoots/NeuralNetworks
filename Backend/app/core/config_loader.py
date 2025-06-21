@@ -4,8 +4,6 @@ import os
 
 load_dotenv()
 
-print(os.getenv('MYSQL_USERNAME'))
-
 settings = Settings(
 	ENVIRONMENT="local",
 	JWT_SECRET_KEY=os.getenv("JWT_SECRET_KEY", ""),
@@ -13,5 +11,6 @@ settings = Settings(
 	MYSQL_PASSWORD=os.getenv("MYSQL_PASSWORD", ""),
 	MYSQL_SERVER=os.getenv("MYSQL_SERVER", ""),
 	MYSQL_PORT=int(os.getenv("MYSQL_PORT", 0)),
-	MYSQL_DATABASE=os.getenv("MYSQL_DATABASE", "")
+	MYSQL_DATABASE=os.getenv("MYSQL_DATABASE", ""),
+    AZURE=os.getenv("AZURE", "")
 )

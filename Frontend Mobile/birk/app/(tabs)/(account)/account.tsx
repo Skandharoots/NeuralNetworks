@@ -4,6 +4,7 @@ import UpdateAccountModal from "@/app/components/UpdateAccountModal";
 import { useAuth } from "@/app/context/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import axios from "axios";
+import { Buffer } from 'buffer';
 import * as ImagePicker from 'expo-image-picker';
 import { useFocusEffect, useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -23,6 +24,8 @@ import {
 } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
+
+
 
 export default function Account() {
 
@@ -79,13 +82,15 @@ export default function Account() {
         })
 
         axios.get('/api/users/picture', {
+            responseType: 'arraybuffer',
             headers: {
                 'Authorization': 'Bearer ' + SecureStore.getItem('jwtToken'),
             }
         }).then(r => {
-                setPic(r.data)
-            }).catch((e) => {
-                alert(e)
+            let base64ImageString = Buffer.from(r.data, 'binary').toString('base64')
+            setPic("data:image/*;base64," + base64ImageString)
+        }).catch((e) => {
+                setPic('')
             })
     }
 
@@ -101,11 +106,13 @@ export default function Account() {
     }
 
     const saveImage = (image: any) => {
-        
-        axios.post("/api/users/picture", {}, {
-            params: {
-                fileName: image.uri,
-            },
+        const formData = new FormData();
+        formData.append("file", {
+            uri: image.uri,
+            name: image.fileName || "photo.jpg",
+            type: image.type || "image/jpeg"
+        });
+        axios.post("/api/users/picture", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
                 'Authorization': 'Bearer ' + SecureStore.getItem('jwtToken'),
@@ -168,14 +175,14 @@ export default function Account() {
     }
 
     const createTwoButtonAlert = () =>
-    Alert.alert('Delete Account', 'Do you want to delete account?', [
-      {
-        text: 'Cancel',
-        onPress: () => {},
-        style: 'cancel',
-      },
-      {text: 'OK', onPress: () => deleteAccount()},
-    ]);
+        Alert.alert('Delete Account', 'Do you want to delete account?', [
+        {
+            text: 'Cancel',
+            onPress: () => {},
+            style: 'cancel',
+        },
+        {text: 'OK', onPress: () => deleteAccount()},
+        ]);
 
     const deleteAccount = () => {
         axios.delete('/api/users/me', {
@@ -207,7 +214,7 @@ export default function Account() {
                                                 objectFit: 'cover', 
                                                 width: '100%', 
                                                 height: '100%', 
-                                                borderRadius: '50%'
+                                                borderRadius: 100,
                                                 }}
                                                     resizeMode={"contain"} 
                                                     source={pic ? {uri: pic} : defaultImage}

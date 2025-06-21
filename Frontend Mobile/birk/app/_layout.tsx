@@ -2,12 +2,15 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Stack } from "expo-router";
  
 import axios from 'axios';
+import { Platform } from 'react-native';
 import AuthProvider from './context/AuthContext';
 import './globals.css';
 
 export default function App() {
 
-  axios.defaults.baseURL = "http://localhost:8000";
+  const LOCALHOST = Platform.OS === 'ios' ? 'http://127.0.0.1:8000' : 'http://10.0.2.2:8000';
+
+  axios.defaults.baseURL = LOCALHOST;
   axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
   axios.defaults.headers["Access-Control-Allow-Origin"] = "http://localhost:8081";
   axios.defaults.withCredentials = true;

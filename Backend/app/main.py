@@ -7,9 +7,10 @@ from auth.router.auth_router import auth_router
 from birthmarks.router.birthmark_router import birthmark_router
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.formparsers import MultiPartParser
+from starlette.middleware import Middleware
 
 MultiPartParser.max_part_size = 25 * 1024 * 1024  # 25MB
-MultiPartParser.max_file_size = 25 * 1024 * 1024   # 25MB
+
 
 openapi_tags=[
     {
@@ -33,9 +34,8 @@ openapi_tags=[
 app = FastAPI(openapi_tags=openapi_tags)
 
 app.add_middleware(
-
     CORSMiddleware,
-    allow_origins=["http://localhost:4000"],
+    allow_origins=["http://192.168.100.18:8081"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
