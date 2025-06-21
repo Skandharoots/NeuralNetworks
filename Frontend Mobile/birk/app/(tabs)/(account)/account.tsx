@@ -206,9 +206,9 @@ export default function Account() {
                 <>
                     <GestureHandlerRootView>
                         <View className="h-['95%'] w-'100%']">
-                            <ScrollView>
-                                <View className="w-['100%'] h-['95%'">
-                                    <View className="flex-1 w-['100%'] h-['100%'] mb-8 items-center justify-start bg-background-light dark:bg-background-dark " >
+                            <ScrollView className="w-['100%']">
+                                <View className="w-['100%'] h-['95%'] min-h-['95%']">
+                                    <View className="flex-1 w-['100%'] min-h-full items-center justify-start bg-background-light dark:bg-background-dark " >
                                         <View className="border-4 rounded-['50%'] bg-white border-shadowLink-light dark:border-shadowLink-dark w-52 h-52">
                                             <Image style={{
                                                 objectFit: 'cover', 
@@ -245,7 +245,7 @@ export default function Account() {
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark"><Ionicons name="log-out-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'} /></Text>
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark ">    Logout</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity className="p-4 mt-20 flex-row w-['80%'] justify-start items-center border-errorBtn-dark dark:border-errorBtn-light border rounded-2xl" onPress={createTwoButtonAlert}>
+                                        <TouchableOpacity className="p-4 mt-20 flex-row w-['80%'] absolute bottom-0 justify-start items-center border-errorBtn-dark dark:border-errorBtn-light border rounded-2xl" onPress={createTwoButtonAlert}>
                                             <Text className="text-lg font-semibold text-errorBtn-main dark:text-errorBtn-light"><Ionicons name="trash-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'rgb(193,56,56)' : 'rgb(159,20,20)'} /></Text>
                                             <Text className="text-lg font-semibold text-errorBtn-main dark:text-errorBtn-light ">    Delete account</Text>
                                         </TouchableOpacity>
