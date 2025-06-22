@@ -27,10 +27,8 @@ export default function Index() {
   const [birthmarks, setBirthmarks] = useState<birthmarkInterface[]>([]);
   const [myUris, setMyUris] = useState<string[]>([]);
   const [reload, setReload] = useState<boolean>(true);
-
   const { onCheck } = useAuth();
   const defaultImage = require('../../assets/images/picture.png');
-
   const isFocused = useIsFocused();
 
   useEffect(() => {
