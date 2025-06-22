@@ -12,4 +12,3 @@ class Birthmark(Base):
     user_id = Column(ForeignKey('users.id', ondelete='CASCADE'), nullable=False)
     date_created = Column(Date, default=datetime.date.today(), nullable=False)
     diagnosis = Column(String(255), nullable=False)
-    picture = Column(String(255), nullable=False)

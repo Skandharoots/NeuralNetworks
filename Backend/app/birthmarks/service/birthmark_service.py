@@ -3,7 +3,7 @@ import tensorflow as tf
 from tensorflow.keras.optimizers import Adamax
 from base.get_db import get_db
 from sqlalchemy.orm import Session
-from fastapi import Depends, UploadFile, HTTPException, Response
+from fastapi import Depends, UploadFile, HTTPException, Response, File
 from birthmarks.models.birthmark import Birthmark
 from users.models.user import User
 from PIL import Image
@@ -16,7 +16,7 @@ from core.config_loader import settings
 def get_birthmarks_by_user_id(current_user: User, db: Session = Depends(get_db)):
     return db.query(Birthmark).filter(Birthmark.user_id == current_user.id)
 
-async def create_birthmark(file: UploadFile, fileName: str, current_user: User, db: Session = Depends(get_db)):
+async def create_birthmark(id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     try:
         image = Image.open(file.file).convert('RGB')
         img = image.resize((224, 224))
@@ -33,10 +33,8 @@ async def create_birthmark(file: UploadFile, fileName: str, current_user: User, 
         print(f"{class_labels[tf.argmax(score)]}")
         prediction = class_labels[tf.argmax(score)]
         birthmark_db = Birthmark()
-        birthmark_db.user_id = current_user.id
-        birthmark_db.picture = fileName
+        birthmark_db.user_id = id
         birthmark_db.diagnosis = prediction
-        await upload_to_azure(file, str("birthmarks/" + birthmark_db.id), "birk")
         db.add(birthmark_db)
         db.commit()
         db.refresh(birthmark_db)
@@ -47,8 +45,8 @@ async def create_birthmark(file: UploadFile, fileName: str, current_user: User, 
 def get_image_birthmark(id: int, db: Session = Depends(get_db)):
     birthmark = db.query(Birthmark).filter(Birthmark.id == id).first()
     if birthmark is None:
-        raise HTTPException(status_code=404, detail="Birthmark not found")
-    return birthmark.picture
+        raise HTTPException(status_code=404, detail="Birthmark not found, cannot load picture")
+    return read_from_azure("birthmarks/" + str(id), "birk")
 
 def delete_birthmark(id: int, db: Session = Depends(get_db)):
     birk = db.query(Birthmark).filter(Birthmark.id == id).first()
@@ -71,7 +69,8 @@ async def upload_to_azure(file: UploadFile, path: str, container_name: str):
         file_bytes = await file.read()  # Read the file content as bytes
         container_client = blob_service_client.get_container_client(container=container_name)
         with BytesIO(file_bytes) as byte_stream:
-            return container_client.upload_blob(name=path, data=byte_stream, overwrite=True)
+            container_client.upload_blob(name=path, data=byte_stream, overwrite=True)
+            return "Photo birthmark uploaded"
     except Exception:
         raise HTTPException(status_code=500, detail='Something went wrong uploading file to Azure')
 

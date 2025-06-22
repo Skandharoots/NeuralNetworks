@@ -1,6 +1,7 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import {useFocusEffect, useRouter} from "expo-router";
-import React, {Fragment, useEffect, useState} from "react";
+import { useIsFocused } from "@react-navigation/native";
+import { useRouter } from "expo-router";
+import React, { Fragment, useEffect, useState } from "react";
 import { Appearance, Platform, SafeAreaView, ScrollView, StatusBar, Text, View } from "react-native";
 import ThemedButton from "../../components/ThemedButtonIrish";
 import ThemedTextInput from "../../components/ThemedTextInput";
@@ -33,23 +34,19 @@ export default function Register() {
     const { onRegister, onCheck } = useAuth();
     const [display, setDisplay] = useState(false);
 
-    useFocusEffect(() => {
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
         async function f() {
             if (onCheck) {
                 let c = await onCheck();
                 if(c) {
-                    setDisplay(false);
                     router.navigate('/(tabs)/(account)/account')
-                } else {
-                    setDisplay(true);
                 }
             }
         }
         f();
-        return () => {
-
-        }
-    });
+    }, [isFocused]);
 
     const validate = () => {
 

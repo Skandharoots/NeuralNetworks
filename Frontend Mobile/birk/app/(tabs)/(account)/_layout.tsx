@@ -1,7 +1,6 @@
 import { useAuth } from "@/app/context/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs, useRouter } from "expo-router";
-import { useEffect } from "react";
 import { Appearance } from "react-native";
 
 const _Layout = () => {
@@ -14,7 +13,7 @@ const _Layout = () => {
     return (
             <Tabs
                 screenOptions={{
-                    headerShown: false, 
+                    headerShown: false,
                     tabBarActiveTintColor: Appearance.getColorScheme() === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)',
                     tabBarIcon: ({ color }) => (
                         <Ionicons name="log-in-outline" size={24} color={color} /> 

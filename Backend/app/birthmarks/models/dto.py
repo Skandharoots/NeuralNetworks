@@ -10,4 +10,3 @@ class BirthmarkDto(BaseModel):
     user_id: int
     date_created: datetime.date
     diagnosis: str
-    picture: str

@@ -12,3 +12,4 @@ pandas
 timm
 matplotlib
 pydantic-settings
+azure-storage-blob

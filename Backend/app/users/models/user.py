@@ -12,5 +12,4 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False)
     password = Column(String(255), nullable=False)
     disabled = Column(Boolean, default=False, nullable=True)
-    profile_picture = Column(String(255), nullable=True)
     

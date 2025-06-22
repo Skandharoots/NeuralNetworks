@@ -73,7 +73,7 @@ export const AuthProvider = ({children}: any) => {
                 }
             });
             axios.defaults.headers.common['Authorization'] = `Bearer ${result.data.access_token}`;
-            const valid = Date.now() + (1000 * 60 * 60 * 1140);
+            const valid = Date.now() + (1000 * 60 * 1140);
             setAuthState({
                 userName: result.data.username,
                 userId: result.data.id,
@@ -126,7 +126,7 @@ export const AuthProvider = ({children}: any) => {
         let now = Date.now();
         let valid = await SecureStore.getItemAsync("validUntil");
         if (valid) {
-            let validUntil = new Date(parseInt(valid)).getTime()
+            let validUntil = new Date(parseInt(valid, 10)).getTime()
             if (validUntil && validUntil - now < 0) {
                 await logout();
                 return false;

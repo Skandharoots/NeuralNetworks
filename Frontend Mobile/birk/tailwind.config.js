@@ -42,6 +42,10 @@ module.exports = {
                 main: 'rgb(117,31,131)',
                 light: 'rgb(174,68,189)',
             },
+            modal: {
+              light: 'rgb(240, 240, 240)',
+              dark: 'rgb(50, 49, 49)',
+            },
             account: {
                 main: 'rgb(0, 0, 0)',
                 dark: 'rgb(255, 255, 255)',

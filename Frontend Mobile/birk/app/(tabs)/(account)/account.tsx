@@ -3,10 +3,11 @@ import ThemedButtonRedOutline from "@/app/components/ThemedButtonRedOutline";
 import UpdateAccountModal from "@/app/components/UpdateAccountModal";
 import { useAuth } from "@/app/context/AuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { useIsFocused } from "@react-navigation/native";
 import axios from "axios";
 import { Buffer } from 'buffer';
 import * as ImagePicker from 'expo-image-picker';
-import { useFocusEffect, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect, useState } from "react";
 import {
@@ -40,33 +41,25 @@ export default function Account() {
     // @ts-ignore
     const { authState, onLogout, onCheck } = useAuth();
     const router = useRouter();
-    const [display, setDisplay] = useState<boolean>(false);
 
     const defaultImage = require('../../../assets/images/user.png');
+    const isFocused = useIsFocused();
 
-
-    useFocusEffect(() => {
+    useEffect(() => {
         async function f() {
             if (onCheck) {
                 let c = await onCheck();
                 if(!c) {
-                    setDisplay(false);
                     router.navigate('/(tabs)/(account)/login')
-                }  else {
-                    loadUser();
-                    setDisplay(true);
                 }
             }
         }
         f();
-        return () => {
-            
-        }
-    });
+    }, [isFocused]);
 
     useEffect(() => {
         loadUser();
-    }, []);
+    }, [isFocused]);
 
     const loadUser = () => {
         axios.get("/api/users/me", {
@@ -78,10 +71,7 @@ export default function Account() {
             setLastName(r.data.last_name);
             setUsername(r.data.username);
             setEmail(r.data.email);
-        }).catch((e) => {
-        })
-
-        axios.get('/api/users/picture', {
+            axios.get('/api/users/picture', {
             responseType: 'arraybuffer',
             headers: {
                 'Authorization': 'Bearer ' + SecureStore.getItem('jwtToken'),
@@ -92,6 +82,11 @@ export default function Account() {
         }).catch(() => {
             setPic('')
         })
+        }).catch((e) => {
+            alert(e.response.data.detail)
+            router.navigate('/(tabs)/(account)/login');
+        })
+
     }
 
     const logout = async () => {
@@ -105,13 +100,13 @@ export default function Account() {
         setIsOpen(!isOpen);
     }
 
-    const saveImage = (image: any) => {
+    const saveImage = async (image: any) => {
         const formData = new FormData();
         formData.append("file", {
             uri: image.uri,
             name: image.fileName || "photo.jpg",
             type: image.type || "image/jpeg"
-        });
+        } as any);
         axios.post("/api/users/picture", formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
@@ -120,8 +115,10 @@ export default function Account() {
         }).then(() => {
             alert("Photo uploaded successfully");
             setPic(image.uri);
+            setIsOpen(false);
         }).catch((e) => {
-            alert(e.response.data);
+            alert(e.response.data.detail);
+            setIsOpen(false);
         })
     }
 
@@ -135,7 +132,7 @@ export default function Account() {
             alert('Picture removed');
             setPic('');
         }).catch(e => {
-            alert(e.response.data);
+            alert(e.response.data.detail);
         })
     }
 
@@ -149,7 +146,9 @@ export default function Account() {
                 base64: true,
             });
             if(!result.canceled) {
-                saveImage(result.assets[0])
+                await saveImage(result.assets[0])
+            } else {
+
             }
         } catch (e) {
             alert(`Failed to launch camera - ${e.message}`);
@@ -167,7 +166,7 @@ export default function Account() {
                 base64: true,
             })
             if (!result.canceled) {
-                saveImage(result.assets[0])
+                await saveImage(result.assets[0])
             }
         } catch (e) {
             alert(`Failed to launch gallery - ${e.message}`);
@@ -202,7 +201,6 @@ export default function Account() {
     // @ts-ignore
     return (
         <SafeAreaView style={{flex: 1, margin: 0, backgroundColor: Appearance.getColorScheme() === 'dark' ?  'rgb(20, 20, 20)' : 'rgb(255, 255, 255)', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
-            {display && (
                 <>
                     <GestureHandlerRootView>
                         <View className="h-['95%'] w-'100%']">
@@ -229,23 +227,23 @@ export default function Account() {
                                                 />
                                             </View>
                                         </View>
-                                        <View className="p-4 mt-8 flex-col w-['80%'] justify-center items-center border-shadowLink-light dark:border-shadowLink-dark border rounded-2xl">
+                                        <View className="p-4 mt-8 flex-col w-['80%'] justify-center items-center bg-modal-light dark:bg-modal-dark rounded-2xl">
                                             <Text className="text-2xl font-semibold text-text-light border-b-2 border-text-light dark:border-text-dark dark:text-text-dark mb-2">{username}</Text>
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark ">{firstName} {lastName}</Text>
                                         </View>
-                                        <View className="p-4 mt-8 flex-row w-['80%'] justify-start items-center border-shadowLink-light dark:border-shadowLink-dark border rounded-2xl">
+                                        <View className="p-4 mt-8 flex-row w-['80%'] justify-start items-center bg-modal-light dark:bg-modal-dark rounded-2xl">
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark"><Ionicons name="mail-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'} /></Text>
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark ">    {email}</Text>
                                         </View>
-                                        <TouchableOpacity className="p-4 mt-8 flex-row w-['80%'] justify-start items-center border-shadowLink-light dark:border-shadowLink-dark border rounded-2xl" onPress={() => setIsUpdateOpen(true)}>
+                                        <TouchableOpacity className="p-4 mt-8 flex-row w-['80%'] justify-start items-center bg-modal-light dark:bg-modal-dark rounded-2xl" onPress={() => setIsUpdateOpen(true)}>
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark"><Ionicons name="create-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'} /></Text>
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark ">    Update account</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity className="p-4 mt-8 flex-row w-['80%'] justify-start items-center border-irish-light dark:border-irish-dark border rounded-2xl" onPress={logout}>
+                                        <TouchableOpacity className="p-4 mt-8 flex-row w-['80%'] justify-start items-center bg-modal-light dark:bg-modal-dark rounded-2xl" onPress={logout}>
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark"><Ionicons name="log-out-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'} /></Text>
                                             <Text className="text-lg font-semibold text-text-light dark:text-text-dark ">    Logout</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity className="p-4 mt-20 flex-row w-['80%'] absolute bottom-0 justify-start items-center border-errorBtn-dark dark:border-errorBtn-light border rounded-2xl" onPress={createTwoButtonAlert}>
+                                        <TouchableOpacity className="p-4 mt-20 flex-row w-['80%'] absolute bottom-0 justify-start items-center bg-modal-light dark:bg-modal-dark border border-errorBtn-main dark:border-errorBtn-light rounded-2xl" onPress={createTwoButtonAlert}>
                                             <Text className="text-lg font-semibold text-errorBtn-main dark:text-errorBtn-light"><Ionicons name="trash-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'rgb(193,56,56)' : 'rgb(159,20,20)'} /></Text>
                                             <Text className="text-lg font-semibold text-errorBtn-main dark:text-errorBtn-light ">    Delete account</Text>
                                         </TouchableOpacity>
@@ -257,7 +255,7 @@ export default function Account() {
                                 <>
                                     <Pressable onPress={openDrawer} className="h-fit w-['100%'] absolute bottom-0">
                                         <Animated.View
-                                            className="w-['100%'] bottom-0 fixed gap-3.5 h-fit pl-8 pr-8 pb-8 rounded-t-3xl bg-shadowLink-dark dark:bg-shadowLink-light justify-center items-center"
+                                            className="w-['100%'] bottom-0 fixed gap-3.5 h-fit pl-8 pr-8 pb-12 rounded-t-3xl bg-modal-light dark:bg-modal-dark justify-center items-center"
                                             entering={SlideInDown.springify().damping(15)}
                                             exiting={SlideOutDown.springify().damping(15)}
                                         >
@@ -267,7 +265,7 @@ export default function Account() {
                                                 }}
                                                 name={"chevron-down-outline"}
                                                 size={28}
-                                                color={Appearance.getColorScheme() === 'dark' ? 'black' : 'white'}/>
+                                                color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}/>
                                             <ThemedButtonIrishStart title={"Camera"} icon={<Ionicons name={"camera-outline"} size={22} />} onPress={openCamera} />
                                             <ThemedButtonIrishStart title={"Picutres"} icon={<Ionicons name={"image-outline"} size={22} />} onPress={uploadImage} />
                                             <ThemedButtonRedOutline title={"Delete"} icon={<Ionicons name={"trash-bin-outline"} size={22} color={Appearance.getColorScheme() === 'dark' ? 'rgb(193,56,56)' : 'rgb(159,20,20)'}/>} onPress={deleteImage}/>
@@ -281,7 +279,6 @@ export default function Account() {
                         </View>
                     </GestureHandlerRootView>
                 </>
-            )}
         </SafeAreaView>
     )
 }
