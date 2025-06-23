@@ -67,11 +67,13 @@ export default function Index() {
             let myuri = "data:svg+xml;base64," + base64ImageString;
             setMyUris(uris => [...uris, myuri]);
           });
-        }).catch((e) => {alert(e.response.data.detail)})
+        }).catch((e) => {
+            //
+        })
       }).catch(e => {
-        alert(e.response.data.detail)
+        //
       })
-  }, [reload])
+  }, [reload, isFocused]);
 
   const openDrawer = () => {
     setIsOpen(!isOpen);
@@ -203,26 +205,26 @@ const deleteBirthmark = (id: number) => {
               </View>
             </View>
         {isOpen && (
-                  <>
-                    <Pressable onPress={openDrawer} className="h-fit w-['100%'] z-10 absolute bottom-0">
-                      <Animated.View
-                          className="w-['100%'] bottom-0 fixed gap-3.5 h-fit pl-8 pr-8 pb-8 rounded-t-3xl bg-modal-light dark:bg-modal-dark justify-center items-center"
-                          entering={SlideInDown.springify().damping(15)}
-                          exiting={SlideOutDown.springify().damping(15)}
-                      >
-                          <Ionicons
-                              style={{
+            <>
+              <Pressable onPress={openDrawer} className="h-fit w-['100%'] z-10 absolute bottom-0">
+                <Animated.View
+                    className="w-['100%'] bottom-0 fixed gap-3.5 h-fit pl-8 pr-8 pb-8 rounded-t-3xl bg-modal-light dark:bg-modal-dark justify-center items-center"
+                    entering={SlideInDown.springify().damping(15)}
+                    exiting={SlideOutDown.springify().damping(15)}
+                >
+                    <Ionicons
+                        style={{
 
-                              }}
-                              name={"chevron-down-outline"}
-                              size={28}
-                              color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}/>
-                          <ThemedButtonIrishStart title={"Camera"} icon={<Ionicons name={"camera-outline"} size={22} />} onPress={openCamera} />
-                          <ThemedButtonIrishStart title={"Picutres"} icon={<Ionicons name={"image-outline"} size={22} />} onPress={uploadImage} />
-                      </Animated.View>
-                    </Pressable>
-                  </>
-              )}
+                        }}
+                        name={"chevron-down-outline"}
+                        size={28}
+                        color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}/>
+                    <ThemedButtonIrishStart title={"Camera"} icon={<Ionicons name={"camera-outline"} size={22} />} onPress={openCamera} />
+                    <ThemedButtonIrishStart title={"Picutres"} icon={<Ionicons name={"image-outline"} size={22} />} onPress={uploadImage} />
+                </Animated.View>
+              </Pressable>
+            </>
+        )}
       </View>
     </SafeAreaView>
   );

@@ -51,14 +51,12 @@ export default function Account() {
                 let c = await onCheck();
                 if(!c) {
                     router.navigate('/(tabs)/(account)/login')
+                } else {
+                    loadUser();
                 }
             }
         }
         f();
-    }, [isFocused]);
-
-    useEffect(() => {
-        loadUser();
     }, [isFocused]);
 
     const loadUser = () => {

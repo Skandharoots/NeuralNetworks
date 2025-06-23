@@ -21,7 +21,6 @@ export default function Login() {
 
     const router = useRouter();
     const { onLogin, onCheck } = useAuth();
-    const [mydisplay, setDisplay] = useState(false);
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -34,7 +33,7 @@ export default function Login() {
             }
         }
         f();
-    }, [isFocused]);
+    }, []);
     
     const validate = () => {
         let isValid = true;
@@ -81,30 +80,26 @@ export default function Login() {
     // @ts-ignore
     return (
         <Fragment>
-            {mydisplay && (
-                <>
-                    <SafeAreaView style={{flex: 1, margin: 0, backgroundColor: Appearance.getColorScheme() === 'dark' ?  'rgb(20, 20, 20)' : 'rgb(255, 255, 255)', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
-                        <View className="flex-1 w-['100%'] h-['100%'] items-center justify-start bg-background-light dark:bg-background-dark " >
-                            <View className="w-['95%'] h-['50%'] items-center justify-center rounded-2xl p-8">
-                                <Text className="text-4xl font-semibold text-text-light dark:text-text-dark mb-10 ">Login</Text>
-                                <ThemedTextInput autoCapitalize="none" placeholder={"Email"} value={userName} onChangeText={setUserName} keyboard={"email-address"}/>
-                                {userNameError &&
-                                    <Text className="text-sm w-['95%'] text-errorBtn-light">{userNameErrorMessage}</Text>
-                                }
-                                <ThemedTextInput placeholder={"Password"} value={password} onChangeText={setPassword} secureTextEntry={true}/>
-                                {passwordError &&
-                                    <Text className="text-sm w-['95%'] mb-4 text-errorBtn-light">{passwordErrorMessage}</Text>
-                                }
-                                <ThemedButton title={"Login"} icon={<Ionicons name="log-in-outline" size={22} />} onPress={login}/>
-                            </View>
-                            <View className="w-['95%'] h-['40%'] items-center justify-end rounded-2xl p-8">
-                                <ThemedButtonWhiteOutline title={"Register"} icon={<Ionicons name="person-add-outline" size={22} />} onPress={() => router.navigate('/(tabs)/(account)/register')}/>
-                                <Text className="text-text-light dark:text-text-dark text-center mt-4">Don&apos;t have an account? Register now!</Text>
-                            </View>
-                        </View>
-                    </SafeAreaView>
-                </>
-            )}
+            <SafeAreaView style={{flex: 1, margin: 0, backgroundColor: Appearance.getColorScheme() === 'dark' ?  'rgb(20, 20, 20)' : 'rgb(255, 255, 255)', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
+                <View className="flex-1 w-['100%'] h-['100%'] items-center justify-start bg-background-light dark:bg-background-dark " >
+                    <View className="w-['95%'] h-['50%'] items-center justify-center rounded-2xl p-8">
+                        <Text className="text-4xl font-semibold text-text-light dark:text-text-dark mb-10 ">Login</Text>
+                        <ThemedTextInput autoCapitalize="none" placeholder={"Email"} value={userName} onChangeText={setUserName} keyboard={"email-address"}/>
+                        {userNameError &&
+                            <Text className="text-sm w-['95%'] text-errorBtn-light">{userNameErrorMessage}</Text>
+                        }
+                        <ThemedTextInput placeholder={"Password"} value={password} onChangeText={setPassword} secureTextEntry={true}/>
+                        {passwordError &&
+                            <Text className="text-sm w-['95%'] mb-4 text-errorBtn-light">{passwordErrorMessage}</Text>
+                        }
+                        <ThemedButton title={"Login"} icon={<Ionicons name="log-in-outline" size={22} />} onPress={login}/>
+                    </View>
+                    <View className="w-['95%'] h-['40%'] items-center justify-end rounded-2xl p-8">
+                        <ThemedButtonWhiteOutline title={"Register"} icon={<Ionicons name="person-add-outline" size={22} />} onPress={() => router.navigate('/(tabs)/(account)/register')}/>
+                        <Text className="text-text-light dark:text-text-dark text-center mt-4">Don&apos;t have an account? Register now!</Text>
+                    </View>
+                </View>
+            </SafeAreaView>
         </Fragment>
     );
 

@@ -128,9 +128,11 @@ export const AuthProvider = ({children}: any) => {
         if (valid) {
             let validUntil = new Date(parseInt(valid, 10)).getTime()
             if (validUntil && validUntil - now < 0) {
+                console.log('False')
                 await logout();
                 return false;
             } else {
+                console.log('True')
                 return true;
             }
         } else {

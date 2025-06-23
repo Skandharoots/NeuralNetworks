@@ -18,13 +18,14 @@ def get_birthmarks_by_user_id(current_user: User, db: Session = Depends(get_db))
 
 async def create_birthmark(id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     try:
+        print(os.getcwd())
         image = Image.open(file.file).convert('RGB')
         img = image.resize((224, 224))
         img_array = tf.keras.preprocessing.image.img_to_array(img)
         img_array = tf.expand_dims(img_array, 0)
         # Load the TFLite models
         print(os.getcwd())
-        loaded_model = tf.keras.models.load_model('ai_model/model/Model.h5', compile=False)
+        loaded_model = tf.keras.models.load_model('../model/Model.h5', compile=False)
         loaded_model.compile(Adamax(learning_rate=0.001), loss='categorical_crossentropy', metrics=['accuracy'])
         # Make predictions
         predictions = loaded_model.predict(img_array)
