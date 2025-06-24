@@ -16,6 +16,12 @@ from core.config_loader import settings
 def get_birthmarks_by_user_id(current_user: User, db: Session = Depends(get_db)):
     return db.query(Birthmark).filter(Birthmark.user_id == current_user.id)
 
+def get_birthmarks_by_user_id_and_diagnosis(diagnosis: str, current_user: User, db: Session = Depends(get_db)):
+    if diagnosis == "None":
+        diagnosis = "%%"
+    return db.query(Birthmark).filter(Birthmark.user_id == current_user.id, Birthmark.diagnosis.like(diagnosis))
+    
+
 async def create_birthmark(id: int, file: UploadFile = File(...), db: Session = Depends(get_db)):
     try:
         print(os.getcwd())

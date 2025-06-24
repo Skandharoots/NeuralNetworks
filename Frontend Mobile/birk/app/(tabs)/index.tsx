@@ -3,11 +3,22 @@ import { useIsFocused } from "@react-navigation/native";
 import axios from 'axios';
 import { Buffer } from 'buffer';
 import * as ImagePicker from 'expo-image-picker';
-import { router } from "expo-router";
+import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import React, { useEffect, useState } from "react";
-import { Appearance, FlatList, Image, Platform, Pressable, StatusBar, Text, TouchableOpacity, View } from "react-native";
-import Animated, { SlideInDown, SlideOutDown } from "react-native-reanimated";
+import {
+  Alert,
+  Appearance,
+  FlatList,
+  Image,
+  Platform,
+  Pressable,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View
+} from "react-native";
+import Animated, { SlideInDown, SlideInUp, SlideOutDown, SlideOutUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ThemedButtonIrish from "../components/ThemedButtonIrish";
 import ThemedButtonIrishStart from "../components/ThemedButtonIrishStart";
@@ -24,12 +35,15 @@ export default function Index() {
   }
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOpen2, setIsOpen2] = useState<boolean>(false);
   const [birthmarks, setBirthmarks] = useState<birthmarkInterface[]>([]);
   const [myUris, setMyUris] = useState<string[]>([]);
   const [reload, setReload] = useState<boolean>(true);
   const { onCheck } = useAuth();
   const defaultImage = require('../../assets/images/picture.png');
   const isFocused = useIsFocused();
+
+  const router = useRouter();
 
   useEffect(() => {
       async function f() {
@@ -78,6 +92,10 @@ export default function Index() {
   const openDrawer = () => {
     setIsOpen(!isOpen);
   }
+
+    const openDrawer2 = () => {
+        setIsOpen2(!isOpen2);
+    }
   
   const uploadBirthmark = async (image: any) => {
         const formData = new FormData();
@@ -149,6 +167,16 @@ const uploadImage = async () => {
     }
 }
 
+const createTwoButtonAlert = (id: number) =>
+    Alert.alert('Delete Birthmark', 'Do you want to delete birthmark id: ' + id + '?', [
+        {
+            text: 'Cancel',
+            onPress: () => {},
+            style: 'cancel',
+        },
+        {text: 'OK', onPress: () => deleteBirthmark(id)},
+    ]);
+
 const deleteBirthmark = (id: number) => {
   axios.delete(`/api/birthmarks/delete/${id}`, {
     headers: {
@@ -167,7 +195,7 @@ const deleteBirthmark = (id: number) => {
     return (
       <View key={index} className="w-['46%'] h-fit rounded-xl m-2 flex-col justify-start items-center bg-modal-light dark:bg-modal-dark border border-modal-light dark:border-modal-dark">
               <View className="w-full h-40 aspect-16/9 border-3xl">
-                <TouchableOpacity className="w-10 h-10 absolute top-1 right-1 z-10 border border-errorBtn-main dark:border-errorBtn-light items-center justify-center rounded-xl" onPress={() => deleteBirthmark(item.id)}>
+                <TouchableOpacity className="w-10 h-10 absolute top-1 right-1 z-10 border border-errorBtn-main dark:border-errorBtn-light items-center justify-center rounded-xl" onPress={() => createTwoButtonAlert(item.id)}>
                   <Text className="text-errorBtn-main dark:text-errorBtn-light"><Ionicons name="trash-outline" size={22}/></Text>
                 </TouchableOpacity>
                 <Image source={myUris[index] ? {uri: myUris[index]} : defaultImage} style={{objectFit: 'cover', 
@@ -179,7 +207,6 @@ const deleteBirthmark = (id: number) => {
             <Text className="text-sm font-normal text-text-light dark:text-text-dark">Id: {item.id}</Text>
             <Text className="text-sm font-normal text-text-light dark:text-text-dark">Created: {item.date_created}</Text>
             <Text className="text-sm font-normal text-text-light dark:text-text-dark">Diagnosis: {item.diagnosis}</Text>
-            
         </View>
       </View>
     )
@@ -187,21 +214,21 @@ const deleteBirthmark = (id: number) => {
   
   return (
     <SafeAreaView style={{flex: 1, margin: 0, backgroundColor: Appearance.getColorScheme() === 'dark' ?  'rgb(20, 20, 20)' : 'rgb(255, 255, 255)', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
-      <View className="w-['100%'] h-['95%'] ">
+        <View className="w-['100%'] h-['95%'] ">
             <View className="w-['100%'] h-['100%'] min-h-['95%'] flex-col justify-start items-center">
-              <TouchableOpacity className="w-fit flex-row min-w-['90%'] mt-8 p-2 justify-start items-center rounded-3xl border border-shadowLink-light dark:border-shadowLink-dark" onPress={() => router.navigate('/(tabs)/search')}>
-                <Text className="text-xl font-semibold italic text-text-light dark:text-text-dark"><Ionicons name="search-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(184, 184, 184)'}/></Text>
-                <Text className="text-xl font-semibold italic text-shadowLink-light dark:text-shadowLink-dark">Search birthmarks</Text>
-              </TouchableOpacity>
-                <FlatList 
-                data={birthmarks} 
-                renderItem={renderItem} 
-                numColumns={2}
-                className="w-['90%'] min-h-['70%'] flex-1 flex-column flex-nowrap rounded-3xl m-8 "
-              />
-              <View className="w-['90%'] p-8 mt-4 sticky flex-col bottom-10 justify-center items-center rounded-3xl ">
-                <Text className="text-lg mb-4 text-text-light dark:text-text-dark">Upload your birthmark</Text>
-                <ThemedButtonIrish title={"Upload"} icon={<Ionicons name="cloud-outline" size={22} color={'white'} />} onPress={openDrawer} />
+                <TouchableOpacity onPress={openDrawer2} className="w-['86%'] flex-row mt-4 p-1 rounded-3xl justify-end items-center">
+                    <Text className="text-lg font-normal text-text-light dark:text-text-dark"><Ionicons name="filter-outline" size={22} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}/></Text>
+                </TouchableOpacity>
+                <View className="w-['100%'] h-['88%'] min-h-['88%'] mb-2 flex-col justify-start items-center">
+                    <FlatList
+                        data={birthmarks}
+                        renderItem={renderItem}
+                        numColumns={2}
+                        className="w-['90%'] min-h-['80%'] flex-1 -z-10 flex-column flex-nowrap rounded-3xl mt-2 mb-8 ml-8 mr-8"
+                    />
+                </View>
+              <View className="w-['90%'] sticky flex-col bottom-6 justify-center items-center rounded-3xl ">
+                <ThemedButtonIrish title={"Check birthmark"} icon={<Ionicons name="cloud-outline" size={22} color={'white'} />} onPress={openDrawer} />
               </View>
             </View>
         {isOpen && (
@@ -225,6 +252,31 @@ const deleteBirthmark = (id: number) => {
               </Pressable>
             </>
         )}
+            {isOpen2 && (
+                <>
+                    <Pressable onPress={openDrawer2} className="h-fit w-['100%'] z-10 absolute top-0">
+                        <Animated.View
+                            className="w-['100%'] bottom-0 fixed gap-3.5 h-fit pl-8 pr-8 pb-2 pt-4 rounded-t-3xl bg-modal-light dark:bg-modal-dark justify-center items-center"
+                            entering={SlideInUp.springify().damping(15)}
+                            exiting={SlideOutUp.springify().damping(15)}
+                        >
+                            <TouchableOpacity className="w-full" onPress={() => {openDrawer2(); router.navigate('/(tabs)/(search)/Benign');}}>
+                                <Text className="text-2xl text-text-light dark:text-text-dark">Benign</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity className="w-full" onPress={() => {openDrawer2(); router.navigate('/(tabs)/(search)/Malignant');}}>
+                                <Text className="text-2xl text-text-light dark:text-text-dark">Malignant</Text>
+                            </TouchableOpacity>
+                            <Ionicons
+                                style={{
+
+                                }}
+                                name={"chevron-up-outline"}
+                                size={28}
+                                color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}/>
+                        </Animated.View>
+                    </Pressable>
+                </>
+            )}
       </View>
     </SafeAreaView>
   );

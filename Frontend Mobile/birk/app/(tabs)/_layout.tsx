@@ -12,7 +12,7 @@ const _Layout = ()=> {
                     tabBarActiveTintColor: Appearance.getColorScheme() === 'dark' ? 'rgb(255, 255, 255)' : 'rgb(0, 0, 0)', 
                     tabBarStyle: {
                         position: 'absolute',
-                        backgroundColor: 'transparent', 
+                        backgroundColor: 'transparent',
                         left: 0,
                         bottom: 30,
                         height: '5%',
@@ -46,9 +46,10 @@ const _Layout = ()=> {
                         )}}
                 />
                 <Tabs.Screen
-                    name="search"
+                    name="(search)"
                     options={{
                         title: 'Search',
+                        headerShown: false,
                         tabBarIcon: ({ color }) => (
                             <Ionicons name="search-outline" size={24} color={color} />
                         )

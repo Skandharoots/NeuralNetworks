@@ -3,7 +3,7 @@ from auth.service.auth_service import get_current_active_user
 from sqlalchemy.orm import Session
 from base.get_db import get_db
 from birthmarks.models.dto import BirthmarkDto
-from birthmarks.service.birthmark_service import get_birthmarks_by_user_id, create_birthmark, delete_birthmark, get_image_birthmark, upload_to_azure
+from birthmarks.service.birthmark_service import get_birthmarks_by_user_id, create_birthmark, delete_birthmark, get_birthmarks_by_user_id_and_diagnosis, get_image_birthmark, upload_to_azure
 from typing import Annotated
 
 from users.models.user import User
@@ -26,6 +26,10 @@ async def upload_picture(id: int = Form(...), file: UploadFile = File(...), curr
 @birthmark_router.get("/get", status_code=status.HTTP_200_OK, response_model=list[BirthmarkDto])
 async def get_birthmark(current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
     return get_birthmarks_by_user_id(current_user, db)
+
+@birthmark_router.get("/diagnosis/{diagnosis}", status_code=status.HTTP_200_OK, response_model=list[BirthmarkDto])
+async def get_birthmark_by_diagnosis(diagnosis: str, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
+    return get_birthmarks_by_user_id_and_diagnosis(diagnosis, current_user, db)
 
 @birthmark_router.get("/get/image/{id}", response_model=None)
 async def get_image(id: int, current_user: User = Depends(get_current_active_user), db: Session = Depends(get_db)):
