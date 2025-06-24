@@ -27,15 +27,15 @@ Then you need to run the following commands from the frontend root folder:
 
 ## Application screenshots
 
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 52 12](https://github.com/user-attachments/assets/c6c296b3-8465-4c10-a62d-2b0dcc6117aa)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 52 21](https://github.com/user-attachments/assets/3a5c5685-0dce-4f04-a762-a3c6db1eb348)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 52 36](https://github.com/user-attachments/assets/395411a1-caae-4e26-95cb-d0d987cad5ba)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 52 44](https://github.com/user-attachments/assets/30aa9676-da81-4383-8e6f-c9e5c98ca189)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 53 00](https://github.com/user-attachments/assets/009bce8b-19ba-4674-8ccb-9a25b351b22f)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 53 06](https://github.com/user-attachments/assets/0d4534d4-eb92-422c-97f9-7e2ccfc0649a)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 53 40](https://github.com/user-attachments/assets/21df9d43-c8d0-4ba5-8851-7e84ba76e82d)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 53 50](https://github.com/user-attachments/assets/5f674d66-b795-4d43-9596-dbc796728b3e)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 54 00](https://github.com/user-attachments/assets/a38abf86-c0dd-4d43-91e1-f7fb56d1f6e1)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 54 13](https://github.com/user-attachments/assets/bf5d0add-4dab-4067-964a-50c07da6605d)
-![Simulator Screenshot - iPhone 16 Pro - 2025-06-24 at 18 55 10](https://github.com/user-attachments/assets/56db0bb2-ff11-493c-815e-b2845398369c)
+<img src="https://github.com/user-attachments/assets/c6c296b3-8465-4c10-a62d-2b0dcc6117aa" alt="Alt text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/3a5c5685-0dce-4f04-a762-a3c6db1eb348" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/395411a1-caae-4e26-95cb-d0d987cad5ba" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/30aa9676-da81-4383-8e6f-c9e5c98ca189" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/009bce8b-19ba-4674-8ccb-9a25b351b22f" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/0d4534d4-eb92-422c-97f9-7e2ccfc0649a" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/21df9d43-c8d0-4ba5-8851-7e84ba76e82d" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/5f674d66-b795-4d43-9596-dbc796728b3e" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/a38abf86-c0dd-4d43-91e1-f7fb56d1f6e1" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/bf5d0add-4dab-4067-964a-50c07da6605d" alt="Alt Text" width="200" height="300">
+<img src="https://github.com/user-attachments/assets/56db0bb2-ff11-493c-815e-b2845398369c" alt="Alt Text" width="200" height="300">
 
