@@ -32,7 +32,6 @@ export default function Register() {
 
     const router = useRouter();
     const { onRegister, onCheck } = useAuth();
-    const [display, setDisplay] = useState(false);
 
     const isFocused = useIsFocused();
 
@@ -179,51 +178,45 @@ export default function Register() {
 
     return (
         <Fragment>
-            {display && (
-                <>
-                    <SafeAreaView style={{flex: 1, margin: 0, backgroundColor: Appearance.getColorScheme() === 'dark' ?  'rgb(20, 20, 20)' : 'rgb(255, 255, 255)', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
-                        <View className="h-['90%'] w-'100%']">
-                            <ScrollView>
-                                <View className="flex-row w-['100%'] pl-4 pr-4 items-center justify-between bg-background-light dark:bg-background-dark " >
-                                    <Text onPress={() => router.navigate('/(tabs)/(account)/login')} className="w-['33%']"><Ionicons name="arrow-back-outline" size={28} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}/></Text>
-                                </View>
-                                <View className="flex-1 w-['100%'] h-['90%'] mt-8 items-center justify-start bg-background-light dark:bg-background-dark " >
-                                    <View className="w-['95%'] h-['95%'] items-center justify-start mb-10 rounded-2xl p-8">
-                                        <Text className="text-4xl font-semibold text-text-light dark:text-text-dark mb-10 ">Register</Text>
-                                        <ThemedTextInput autoCapitalize="none" placeholder={"First name"} value={firstName} onChangeText={setFirstName} keyboard={"email-address"}/>
-                                        {firstNameError &&
-                                            <Text className="text-sm w-['95%'] text-errorBtn-light">{firstNameErrorMessage}</Text>
-                                        }
-                                        <ThemedTextInput autoCapitalize="none" placeholder={"Last name"} value={lastName} onChangeText={setLastName} keyboard={"email-address"}/>
-                                        {lastNameError &&
-                                            <Text className="text-sm w-['95%'] text-errorBtn-light">{lastNameErrorMessage}</Text>
-                                        }
-                                        <ThemedTextInput autoCapitalize="none" placeholder={"Username"} value={userName} onChangeText={setUserName} keyboard={"email-address"}/>
-                                        {userNameError &&
-                                            <Text className="text-sm w-['95%'] text-errorBtn-light">{userNameErrorMessage}</Text>
-                                        }
-                                        <ThemedTextInput autoCapitalize="none" placeholder={"Email"} value={email} onChangeText={setEmail} keyboard={"email-address"}/>
-                                        {emailError &&
-                                            <Text className="text-sm w-['95%'] text-errorBtn-light">{emailErrorMessage}</Text>
-                                        }
-                                        <ThemedTextInput placeholder={"Password"} value={password} onChangeText={setPassword} secureTextEntry={true}/>
-                                        {passwordError &&
-                                            <Text className="text-sm w-['95%'] text-errorBtn-light">{passwordErrorMessage}</Text>
-                                        }
-                                        <ThemedTextInput placeholder={"Confirm password"} value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry={true}/>
-                                        {confirmPasswordError &&
-                                            <Text className="text-sm w-['95%'] mb-4 text-errorBtn-light">{confirmPasswordErrorMessage}</Text>
-                                        }
-                                        <ThemedButton title={"Register"} icon={<Ionicons name="log-in-outline" size={18} />} onPress={register}/>
-                                    </View>
-                                </View>
-                            </ScrollView>
+            <SafeAreaView style={{flex: 1, margin: 0, backgroundColor: Appearance.getColorScheme() === 'dark' ?  'rgb(20, 20, 20)' : 'rgb(255, 255, 255)', paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0}}>
+                <View className="h-['90%'] w-'100%']">
+                    <ScrollView>
+                        <View className="flex-row w-['100%'] pl-4 pr-4 items-center justify-between bg-background-light dark:bg-background-dark " >
+                            <Text onPress={() => router.navigate('/(tabs)/(account)/login')} className="w-['33%']"><Ionicons name="arrow-back-outline" size={28} color={Appearance.getColorScheme() === 'dark' ? 'white' : 'black'}/></Text>
                         </View>
-                    </SafeAreaView>
-                </>
-            )}
+                        <View className="flex-1 w-['100%'] h-['90%'] mt-8 items-center justify-start bg-background-light dark:bg-background-dark " >
+                            <View className="w-['95%'] h-['95%'] items-center justify-start mb-10 rounded-2xl p-8">
+                                <Text className="text-4xl font-semibold text-text-light dark:text-text-dark mb-10 ">Register</Text>
+                                <ThemedTextInput autoCapitalize="none" placeholder={"First name"} value={firstName} onChangeText={setFirstName} keyboard={"email-address"}/>
+                                {firstNameError &&
+                                    <Text className="text-sm w-['95%'] text-errorBtn-light">{firstNameErrorMessage}</Text>
+                                }
+                                <ThemedTextInput autoCapitalize="none" placeholder={"Last name"} value={lastName} onChangeText={setLastName} keyboard={"email-address"}/>
+                                {lastNameError &&
+                                    <Text className="text-sm w-['95%'] text-errorBtn-light">{lastNameErrorMessage}</Text>
+                                }
+                                <ThemedTextInput autoCapitalize="none" placeholder={"Username"} value={userName} onChangeText={setUserName} keyboard={"email-address"}/>
+                                {userNameError &&
+                                    <Text className="text-sm w-['95%'] text-errorBtn-light">{userNameErrorMessage}</Text>
+                                }
+                                <ThemedTextInput autoCapitalize="none" placeholder={"Email"} value={email} onChangeText={setEmail} keyboard={"email-address"}/>
+                                {emailError &&
+                                    <Text className="text-sm w-['95%'] text-errorBtn-light">{emailErrorMessage}</Text>
+                                }
+                                <ThemedTextInput placeholder={"Password"} value={password} onChangeText={setPassword} secureTextEntry={true}/>
+                                {passwordError &&
+                                    <Text className="text-sm w-['95%'] text-errorBtn-light">{passwordErrorMessage}</Text>
+                                }
+                                <ThemedTextInput placeholder={"Confirm password"} value={confirmPassword} onChangeText={setConfirmPassword} secureTextEntry={true}/>
+                                {confirmPasswordError &&
+                                    <Text className="text-sm w-['95%'] mb-4 text-errorBtn-light">{confirmPasswordErrorMessage}</Text>
+                                }
+                                <ThemedButton title={"Register"} icon={<Ionicons name="log-in-outline" size={18} />} onPress={register}/>
+                            </View>
+                        </View>
+                    </ScrollView>
+                </View>
+            </SafeAreaView>
         </Fragment>
-        
-        
     )
 }

@@ -59,7 +59,7 @@ def delete_birthmark(id: int, db: Session = Depends(get_db)):
     birk = db.query(Birthmark).filter(Birthmark.id == id).first()
     if birk is None:
         raise HTTPException(status_code=404, detail="Birthmark not found")
-    delete_from_azure(str(id), "birk")
+    delete_from_azure("birthmarks/" + str(id), "birk")
     db.query(Birthmark).filter(Birthmark.id == id).delete()
     db.commit()
 

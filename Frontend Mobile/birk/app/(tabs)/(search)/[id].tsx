@@ -81,7 +81,7 @@ export default function Search() {
         }).catch(e => {
             //
         })
-  }, [isFocused, id, diagnosis]);
+  }, [isFocused, id, diagnosis, reload]);
 
   const createTwoButtonAlert = (id: number) =>
         Alert.alert('Delete Birthmark', 'Do you want to delete birthmark id: ' + id + '?', [
@@ -102,7 +102,8 @@ export default function Search() {
             setReload(!reload);
             alert('Birthmark with id ' + id + ' deleted.')
         }).catch(e => {
-            alert(e.response.data.detail)
+            console.log(e)
+            alert(e.response.data)
         })
     }
 
